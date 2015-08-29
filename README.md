@@ -1,0 +1,1 @@
+A simple budgeting application designed to help with basic financial planning. Mint.com did not support bi-weekly budgeting when I created this project, and I wanted a more realistic view of my finances with a bi-weekly income. 
