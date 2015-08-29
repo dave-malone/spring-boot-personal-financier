@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum IncomeFrequency {
-	OneTime("One Time"), BiWeekly("Bi-Weekly");
+	OneTime("One Time"), BiWeekly("Bi-Weekly"), SemiMonthly("Semi-Monthly");
 	
 	private final String name;
 	
