@@ -1,5 +1,6 @@
 package io.dmalone.personalfinancier.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,66 @@ public class Budget {
 	private Set<Income> plannedIncome = new HashSet<Income>();
 	private Set<Expense> unplannedExpenses = new HashSet<Expense>();
 	private Set<Income> unplannedIncome = new HashSet<Income>();
+	
+	public BigDecimal getTotalPlannedIncome(){
+		BigDecimal total = new BigDecimal(0.0);
+		
+		for(Income plannedIncome : plannedIncome){
+			total = total.add(plannedIncome.getAmount());
+		}
+		
+		return total;
+	}
+	
+	public BigDecimal getTotalUnplannedIncome(){
+		BigDecimal total = new BigDecimal(0.0);
+		
+		for(Income unplannedIncome : unplannedIncome){
+			total = total.add(unplannedIncome.getAmount());
+		}
+		
+		return total;
+	}
+	
+	public BigDecimal getTotalIncome(){
+		BigDecimal total = new BigDecimal(0.0);
+		total = total.add(getTotalPlannedIncome());
+		total = total.add(getTotalUnplannedIncome());
+		
+		return total;
+	}
+	
+	public BigDecimal getTotalPlannedExpenses(){
+		BigDecimal total = new BigDecimal(0.0);
+		
+		for(Expense plannedExpense : plannedExpenses){
+			total = total.add(plannedExpense.getAmount());
+		}
+		
+		return total;
+	}
+	
+	public BigDecimal getTotalUnplannedExpenses(){
+		BigDecimal total = new BigDecimal(0.0);
+		
+		for(Expense unplannedExpense : unplannedExpenses){
+			total = total.add(unplannedExpense.getAmount());
+		}
+		
+		return total;
+	}
+	
+	public BigDecimal getTotalExpenses(){
+		BigDecimal total = new BigDecimal(0.0);
+		total = total.add(getTotalPlannedExpenses());
+		total = total.add(getTotalUnplannedExpenses());
+		
+		return total;
+	}
+	
+	public BigDecimal getRemainderAfterExpenses(){
+		return getTotalIncome().subtract(getTotalExpenses());
+	}
 	
 	public String getId() {
 		return id;
