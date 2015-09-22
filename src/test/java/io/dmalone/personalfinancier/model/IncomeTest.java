@@ -44,23 +44,24 @@ public class IncomeTest {
 	}
 	
 	@Test
-	public void testBiWeeklyGetPayDatesInMonthWhereDatesLandOnFirstOfTheMonth() throws Exception{
-		//TODO
-//		Date feb062015 = Income.DATE_FORMAT.parse("Feb-06-2015");
-//		
-//		Date july102015 = Income.DATE_FORMAT.parse("Jul-10-2015");
-//		Date july242015 = Income.DATE_FORMAT.parse("Jul-24-2015");
-//		
-//		Income income = new Income();
-//		income.setIncomeFrequency(IncomeFrequency.BI_WEEKLY);
-//		income.setStartDate(feb062015);
-//		
-//		List<Date> payDatesInJuly2015 = income.getPayDatesInMonth(2015, "Jul");
-//		assertNotNull(payDatesInJuly2015);
-//		assertFalse(payDatesInJuly2015.isEmpty());
-//		assertEquals(2, payDatesInJuly2015.size());
-//		assertTrue(payDatesInJuly2015.contains(july102015));
-//		assertTrue(payDatesInJuly2015.contains(july242015));
+	public void testBiWeeklyGetPayDatesInMonthWhereDatesLandOnFirstOfTheMonthContainsAllExpectedDates() throws Exception{
+		Date incomeStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
+		
+		Date firstExpectedPayDate = Income.DATE_FORMAT.parse("May-01-2015");
+		Date secondExpectedPayDate = Income.DATE_FORMAT.parse("May-15-2015");
+		Date thirdExpectedPayDate = Income.DATE_FORMAT.parse("May-29-2015");
+		
+		Income income = new Income();
+		income.setIncomeFrequency(IncomeFrequency.BiWeekly);
+		income.setStartDate(incomeStartDate);
+		
+		List<Date> payDatesInMay2015 = income.getPayDatesInMonth(2015, "May");
+		assertNotNull(payDatesInMay2015);
+		assertFalse(payDatesInMay2015.isEmpty());
+		assertEquals(3, payDatesInMay2015.size());
+		assertTrue(payDatesInMay2015.contains(firstExpectedPayDate));
+		assertTrue(payDatesInMay2015.contains(secondExpectedPayDate));
+		assertTrue(payDatesInMay2015.contains(thirdExpectedPayDate));
 	}
 
 }
