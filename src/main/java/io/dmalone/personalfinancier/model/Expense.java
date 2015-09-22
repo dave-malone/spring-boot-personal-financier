@@ -37,6 +37,16 @@ public class Expense {
 	/** only used for recurring ExpenseTypes such as Monthly or Per Paycheck */
 	private Date endDate;
 
+	public Expense(){
+		//default constructor
+	}
+	
+	public Expense(String name, String amount, ExpenseType expenseType){
+		this.name = name;
+		this.amount = new BigDecimal(amount);
+		this.expenseType = expenseType;
+	}
+	
 	
 	public String toString(){
 		return String.format("Expense[Type: %s, Name: %s, Amount: %s, Due Date: %s]", expenseType, name, amount, dayOfMonthDue);

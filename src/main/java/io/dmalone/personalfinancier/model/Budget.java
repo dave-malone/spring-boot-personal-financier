@@ -134,5 +134,21 @@ public class Budget {
 	public void setUnplannedIncome(Set<Income> unplannedIncome) {
 		this.unplannedIncome = unplannedIncome;
 	}
+
+	public void addPlannedIncome(Income income) {
+		this.plannedIncome.add(income);
+	}
+
+	public void addUnplannedIncome(Income income) {
+		this.unplannedIncome.add(income);
+	}
+
+	public void addPlannedExpense(Expense expense) {
+		this.plannedExpenses.add(expense);
+	}
+	
+	public void addUnplannedExpense(Expense expense) {
+		this.unplannedExpenses.add(expense);
+	}
 	
 }

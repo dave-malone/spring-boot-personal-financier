@@ -26,6 +26,16 @@ public class Income {
 	private Date startDate;
 	private Date endDate;
 
+	public Income(){
+		//default constructor
+	}
+	
+	public Income(String name, String amount, IncomeFrequency incomeFrequency){
+		this.name = name;
+		this.amount = new BigDecimal(amount);
+		this.incomeFrequency = incomeFrequency;
+	}
+	
 	public List<Date> getPayDatesInMonth(int year, String month) throws ParseException{
 		List<Date> payDates = new ArrayList<Date>();
 		
