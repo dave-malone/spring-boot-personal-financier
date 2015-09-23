@@ -28,6 +28,10 @@ public class BudgetService {
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
+		
+		//TODO - if the current budget is "empty" i.e. lacks income/expenses,
+		//then query for planned income and expenses for the current budget
+		//period and add to the current budget
 
 		return this.budgetRepository.getByDate(calendar.getTime());
 	}

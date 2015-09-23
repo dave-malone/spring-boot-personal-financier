@@ -1,7 +1,12 @@
 package io.dmalone.personalfinancier.service;
 
 import io.dmalone.personalfinancier.model.Expense;
+import io.dmalone.personalfinancier.model.ExpenseType;
 import io.dmalone.personalfinancier.repository.ExpenseRepository;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +23,7 @@ public class ExpenseService {
 	}
 
 	public <S extends Expense> S save(S entity) {
-		return expenseRepository.save(entity);
+		return expenseRepository.insert(entity);
 	}
 
 	public <S extends Expense> Iterable<S> save(Iterable<S> entities) {
@@ -33,7 +38,7 @@ public class ExpenseService {
 		return expenseRepository.exists(id);
 	}
 
-	public Iterable<Expense> findAll() {
+	public List<Expense> findAll() {
 		return expenseRepository.findAll();
 	}
 
@@ -61,6 +66,19 @@ public class ExpenseService {
 		expenseRepository.deleteAll();
 	}
 
-	
+	public List<Expense> findByExpenseType(ExpenseType expenseType) {
+		return expenseRepository.findByExpenseType(expenseType);
+	}
+
+	public Map<ExpenseType, List<Expense>> getAllExpensesByType(){
+		final Map<ExpenseType, List<Expense>> expensesByType = new HashMap<ExpenseType, List<Expense>>();
+		
+		for(ExpenseType expenseType : ExpenseType.values()){
+			List<Expense> expenses = findByExpenseType(expenseType);
+			expensesByType.put(expenseType, expenses);
+		}
+		
+		return expensesByType;
+	}
 	
 }
