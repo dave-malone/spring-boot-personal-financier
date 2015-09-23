@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 
+
 /**
  * A multipurpose Expense class. Certain fields will be required based on the value
  * of the ExpenseType field. For instance, if the ExpenseType is a One Time expense,

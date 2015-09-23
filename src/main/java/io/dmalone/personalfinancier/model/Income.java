@@ -12,7 +12,6 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 
-
 public class Income {
 
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM-dd-yyyy");
