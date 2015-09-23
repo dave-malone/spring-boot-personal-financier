@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Personal Financier</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}"/>
+		<link rel="shortcut icon" href="favicon.ico" />
+
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<h1 class="header-heading">Personal Financier</h1>
+			</div>
+		</div>
+		<div class="nav-bar">
+			<div class="container">
+				<ul class="nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:href="@{/expense/}">All Expenses</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div class="container">
+				<div class="main">
+					<h1>Create a New Expense</h1>
+					<hr />
+					
+					<form action="#" th:action="@{/expense/}" th:object="${expense}" th:method="${expense.id == null ? 'post' : 'put'}">
+						<input th:if="${expense.id != null}" type="hidden" th:field="*{id}" />
+						     
+						<label for="expenseType">Type:</label>
+						<select id="expenseType" th:field="${expense.expenseType}">
+							<option th:each="expenseType : ${expenseTypes}" 
+								th:value="${expenseType}" 
+								th:text="${expenseType}">ExpenseType</option>
+						</select>
+						     
+						<label for="name">Name:</label>
+						<input type="text" th:field="${expense.name}"/>
+						
+						<label for="amount">Amount (dollars):</label>
+						<input type="text" th:field="${expense.amount}"/>
+						
+						<input type="submit" />
+			        </form>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				&copy; Copyright 2015
+			</div>
+		</div>
+	</body>
+</html>

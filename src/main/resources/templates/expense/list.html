@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Personal Financier</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}"/>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<style>
+			h3{
+				margin-top:2.2em;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<h1 class="header-heading">Personal Financier</h1>
+			</div>
+		</div>
+		<div class="nav-bar">
+			<div class="container">
+				<ul class="nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:href="@{/expense/create/}">New Expense</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div class="container">
+				<div class="main">
+					<h1>Viewing all Expenses by Type</h1>
+					
+					<div th:if="${#lists.isEmpty(entry.value) != true}" th:each="entry : ${expensesByType}">
+						<h3 th:text="${entry.key} + ' Expenses'">Type</h3>
+						<table class="table table-striped">
+							<tr th:each="expense : ${entry.value}">
+								<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
+								<td th:text="${expense.amount}">Amount</td>
+								<td th:text="${expense.dateCreated}">Date Created</td>
+								<td th:text="${expense.startDate}">Start Date</td>
+								<td th:text="${expense.endDate}">Start Date</td>
+								<td th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
+								<td th:text="${expense.dueDate}">Due Date</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				&copy; Copyright 2015
+			</div>
+		</div>
+	</body>
+</html>
