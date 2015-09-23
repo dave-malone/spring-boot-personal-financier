@@ -7,7 +7,7 @@ import io.dmalone.personalfinancier.model.Income;
 import io.dmalone.personalfinancier.model.IncomeFrequency;
 import io.dmalone.personalfinancier.repository.BudgetRepository;
 
-import java.util.Date;
+import java.util.Calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,13 @@ public class BudgetService {
 	}
 	
 	public Budget getCurrentBudget(){
-		Date now = new Date();
-		
-		//TODO - find budget where todays date is within the start and 
-		//end date of a budget record
-		
-		return null;
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+
+		return this.budgetRepository.getByDate(calendar.getTime());
 	}
 	
 	public void addExpense(Expense expense){
