@@ -3,8 +3,6 @@ package io.dmalone.personalfinancier.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-
 
 /**
  * A multipurpose Expense class. Certain fields will be required based on the value
@@ -16,9 +14,10 @@ import org.springframework.data.annotation.Id;
  * @author dmalone
  *
  */
+
 public class Expense {
 
-	@Id private String id;
+	private String id;
 	private Date dateCreated = new Date();
 	
 	private ExpenseType expenseType;

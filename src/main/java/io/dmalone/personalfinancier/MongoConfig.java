@@ -8,6 +8,10 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoFactoryBean;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
+import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
+import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
+import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
+import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 
 import com.mongodb.Mongo;
 
@@ -36,7 +40,12 @@ public class MongoConfig {
 	}
 	
 	public @Bean MongoTemplate mongoTemplate(MongoDbFactory mongoDbFactory){
-		return new MongoTemplate(mongoDbFactory);
+		//remove _class
+		MappingMongoConverter converter = new MappingMongoConverter(new DefaultDbRefResolver(mongoDbFactory), new MongoMappingContext());
+		converter.setTypeMapper(new DefaultMongoTypeMapper(null));
+			
+		MongoTemplate mongoTemplate = new MongoTemplate(mongoDbFactory, converter);
+		return mongoTemplate;
 	}
 
 }

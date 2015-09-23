@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 
 /**
@@ -14,9 +15,11 @@ import org.springframework.data.annotation.Id;
  * @author dmalone
  *
  */
+@Document(collection="budget")
 public class Budget {
 
-	@Id private String id;
+	@Id 
+	private String id;
 	private BudgetType budgetType;
 	private Date startDate;
 	private Date endDate;
