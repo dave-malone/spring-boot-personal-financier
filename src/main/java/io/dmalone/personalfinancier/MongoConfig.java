@@ -14,18 +14,11 @@ import com.mongodb.Mongo;
 @Configuration
 public class MongoConfig {
 	
-	@Value("${mongo.username:}")
-	private String mongoUsername;
-	@Value("${mongo.password:}")
-	private String mongoPassword;
-	@Value("${mongo.database:personalfinancier}")
-	private String mongoDatabase;
-	
-	@Value("${mongo.host:localhost}")
-	private String mongoHost;
-	
-	@Value("${mongo.port:27017}")
-	private int mongoPort;
+	@Value("${mongo.username:}") private String mongoUsername;
+	@Value("${mongo.password:}") private String mongoPassword;
+	@Value("${mongo.database:personalfinancier}") private String mongoDatabase;
+	@Value("${mongo.host:localhost}") private String mongoHost;
+	@Value("${mongo.port:27017}") private int mongoPort;
 	
 	public @Bean MongoDbFactory mongoDbFactory(Mongo mongo) throws Exception {
 		UserCredentials userCredentials = new UserCredentials(mongoUsername, mongoPassword);
@@ -38,7 +31,7 @@ public class MongoConfig {
 	public @Bean MongoFactoryBean mongo() {
 		MongoFactoryBean mongo = new MongoFactoryBean();
 		mongo.setHost(mongoHost);
-		mongo.setPort(27017);
+		mongo.setPort(mongoPort);
 		return mongo;
 	}
 	
