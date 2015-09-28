@@ -49,8 +49,6 @@ test {
 	}
 }
 
-
-
 eclipse {
     classpath {
          containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
@@ -60,4 +58,8 @@ eclipse {
 
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
+}
+
+task unitTest( type: Test ) {
+	exclude '**/*IntegrationTests.*'
 }
