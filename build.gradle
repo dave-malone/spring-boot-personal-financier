@@ -18,7 +18,10 @@ apply plugin: 'spring-boot'
 apply plugin: 'io.spring.dependency-management' 
 apply plugin: 'war'
 
-
+jar {
+	baseName = 'personalfinancier'
+	version =  '2.0'
+}
 war {
     baseName = 'personalfinancier'
     version = '2.0'
