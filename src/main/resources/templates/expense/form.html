@@ -8,10 +8,38 @@
 		<meta name="robots" content="index, follow" />
 
 		<!-- icons -->
-		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}"/>
+		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}" />
 		<link rel="shortcut icon" href="favicon.ico" />
-
-		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script>
+			$(function() {
+				toggleExpenseTypeOptions();
+				$(".datepicker").datepicker();
+				$("select#expenseType").change(toggleExpenseTypeOptions);
+			});
+			
+			function toggleExpenseTypeOptions(){
+				if('Monthly' == $("select#expenseType").val()){
+					 $('#dayOfMonthDueOption').show()
+					 $('#dueDateOption').hide()
+					 $('#endDateOption').show()
+					 $('#startDateOption').show()
+				 }else if('One Time' == $("select#expenseType").val()){
+					 $('#dayOfMonthDueOption').hide()
+					 $('#dueDateOption').show()
+					 $('#endDateOption').hide()
+					 $('#startDateOption').hide()
+				 }else if('Per Paycheck' == $("select#expenseType").val()){
+					 $('#dayOfMonthDueOption').hide()
+					 $('#dueDateOption').hide()
+					 $('#endDateOption').show()
+					 $('#startDateOption').show()
+				 } 
+			}
+		</script>
 	</head>
 	<body>
 		<div class="header">
@@ -30,26 +58,52 @@
 		<div class="content">
 			<div class="container">
 				<div class="main">
-					<h1>Create a New Expense</h1>
+					<h1 th:text="${(expense.id != null ? 'Edit' : 'Create') + ' an Expense'}">Page Title</h1>
 					<hr />
 					
 					<form action="#" th:action="@{/expense/}" th:object="${expense}" th:method="${expense.id == null ? 'post' : 'put'}">
 						<input th:if="${expense.id != null}" type="hidden" th:field="*{id}" />
-						     
-						<label for="expenseType">Type:</label>
-						<select id="expenseType" th:field="${expense.expenseType}">
-							<option th:each="expenseType : ${expenseTypes}" 
-								th:value="${expenseType}" 
-								th:text="${expenseType}">ExpenseType</option>
-						</select>
-						     
-						<label for="name">Name:</label>
-						<input type="text" th:field="${expense.name}"/>
-						
-						<label for="amount">Amount (dollars):</label>
-						<input type="text" th:field="${expense.amount}"/>
-						
-						<input type="submit" />
+						<ul>
+							<li>     
+								<label for="expenseType">Type:</label>
+								<select id="expenseType" th:field="${expense.expenseType}">
+									<option th:each="expenseType : ${expenseTypes}" 
+										th:value="${expenseType}" 
+										th:text="${expenseType}">ExpenseType</option>
+								</select>
+							</li>
+							<li>     
+								<label for="name">Name:</label>
+								<input type="text" th:field="${expense.name}"/>
+							</li>
+							<li>
+								<label for="amount">Amount (dollars):</label>
+								<input type="text" th:field="${expense.amount}"/>
+							</li>
+							<li id="dayOfMonthDueOption">
+								<label for="dayOfMonthDue">Day of Month Due:</label>
+								<select>
+									<option th:each="i : ${#numbers.sequence( 1, 31 )}"
+										th:value="${expense.dayOfMonthDue}" 
+										th:text="${i}">Day of Month Due</option>
+								</select>
+							</li>
+							<li id="dueDateOption">
+								<label for="dueDate">Due Date:</label>
+								<input type="text" class="datepicker" th:field="${expense.dueDate}" />
+							</li>
+							<li id="startDateOption">
+								<label for="startDate">Start Date:</label>
+								<input type="text" class="datepicker" th:field="${expense.startDate}" />
+							</li>
+							<li id="endDateOption">
+								<label for="endDate">End Date:</label>
+								<input type="text" class="datepicker" th:field="${expense.endDate}" />
+							</li>
+							<li>
+								<input type="submit" />
+							</li>
+						</ul>
 			        </form>
 				</div>
 			</div>

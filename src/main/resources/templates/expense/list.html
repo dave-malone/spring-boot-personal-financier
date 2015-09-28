@@ -16,6 +16,28 @@
 				margin-top:2.2em;
 			}
 		</style>
+		
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script>
+			$(function() {
+				$('.delete').click(function(){
+					var parentTr = $(this).parent().parent()
+					if(confirm("Are you sure you want to delete this Expense?")){
+						$.ajax({
+						    url: $(this).attr("href"),
+						    type: 'DELETE',
+						    success: function(result) {
+						        parentTr.remove();
+						    }
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+		
+		
 	</head>
 	<body>
 		<div class="header">
@@ -39,14 +61,23 @@
 					<div th:if="${#lists.isEmpty(entry.value) != true}" th:each="entry : ${expensesByType}">
 						<h3 th:text="${entry.key} + ' Expenses'">Type</h3>
 						<table class="table table-striped">
+							<tr>
+								<th>&nbsp;</th>
+								<th>Amount</th>
+								<th th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}">Start Date</th>
+								<th th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}">End Date</th>
+								<th th:if="${#strings.equals('Monthly', entry.key)}">Day of Month Due</th>
+								<th th:if="${#strings.equals('One Time', entry.key)}">Due Date</th>
+								<th>&nbsp;</th>
+							</tr>
 							<tr th:each="expense : ${entry.value}">
 								<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
 								<td th:text="${expense.amount}">Amount</td>
-								<td th:text="${expense.dateCreated}">Date Created</td>
-								<td th:text="${expense.startDate}">Start Date</td>
-								<td th:text="${expense.endDate}">Start Date</td>
-								<td th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
-								<td th:text="${expense.dueDate}">Due Date</td>
+								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM, dd, yyyy') : ''}">Start Date</td>
+								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.endDate != null ? #dates.format(expense.endDate, 'MMM, dd, yyyy') : ''}">End Date</td>
+								<td th:if="${#strings.equals('Monthly', entry.key)}" th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
+								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${expense.dueDate != null ? #dates.format(expense.dueDate, 'MMM, dd, yyyy') ? ''}">Due Date</td>
+								<td><a th:href="@{'/expense/' + ${expense.id}}" class="delete">Delete</a></td>
 							</tr>
 						</table>
 					</div>

@@ -4,17 +4,23 @@ import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
 import io.dmalone.personalfinancier.repository.ExpenseRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/expense")
@@ -26,6 +32,14 @@ public class ExpenseController {
 	@Autowired
 	public ExpenseController(ExpenseRepository expenseRepository) {
 		this.expenseRepository = expenseRepository;
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder webDataBinder) {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		dateFormat.setLenient(false);
+		webDataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
+		webDataBinder.registerCustomEditor(ExpenseType.class, new ExpenseTypeEnumConverter());
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -57,6 +71,18 @@ public class ExpenseController {
 		model.addAttribute("expenseTypes", ExpenseType.values());
 		model.addAttribute("expense", expense);
 		return "expense/form";
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public @ResponseBody String delete(@PathVariable("id") String id){
+		Expense expense = expenseRepository.findOne(id);
+		
+		if(expense == null){
+			return "Expense for ID " + id + " could not be found";
+		}
+		
+		expenseRepository.delete(id);
+		return "Expense " + id + " was deleted";
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)

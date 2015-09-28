@@ -65,7 +65,7 @@ public class ExpenseControllerTest {
     }
     
     @Test
-    public void editExpense() throws Exception {
+    public void editExpenseHappyPath() throws Exception {
     	String expenseId = "123456789";
     	
     	ExpenseType expenseType = ExpenseType.Monthly;
@@ -91,10 +91,48 @@ public class ExpenseControllerTest {
     }
     
     @Test
-    public void saveExpenseHappyPath() throws Exception {
-        ExpenseType expenseType = ExpenseType.Monthly;
+    public void deleteExpenseHappyPath() throws Exception {
+    	String expenseId = "123456789";
+    	
+    	ExpenseType expenseType = ExpenseType.Monthly;
 		String name = "Test Expense";
 		String amount = "5.00";
+		
+		Expense expectedExpense = new Expense(name, amount, expenseType);
+		expectedExpense.setId(expenseId);
+		
+		when(expenseRepository.findOne(expenseId)).thenReturn(expectedExpense);
+    	
+        mvc.perform(
+        		MockMvcRequestBuilders
+        			.delete("/expense/" + expenseId))
+	            .andExpect(status().isOk())
+	            .andExpect(content().string(
+	                    is("Expense " + expenseId + " was deleted")));
+    }
+    
+    @Test
+    public void deleteUnknownExpenseIdReturnsAppropriateMessage() throws Exception {
+    	String expenseId = "123456789";
+		
+		Expense expectedExpense = null;
+		
+		when(expenseRepository.findOne(expenseId)).thenReturn(expectedExpense);
+    	
+        mvc.perform(
+        		MockMvcRequestBuilders
+        			.delete("/expense/" + expenseId))
+	            .andExpect(status().isOk())
+	            .andExpect(content().string(
+	                    is("Expense for ID " + expenseId + " could not be found")));
+    }
+    
+    @Test
+    public void saveExpenseHappyPath() throws Exception {
+        ExpenseType expenseType = ExpenseType.PerPaycheck;
+		String name = "Test Expense";
+		String amount = "5.00";
+		String startDate = "09/28/2015";
 		
 		Expense expectedExpense = new Expense(name, amount, expenseType);
 		when(expenseRepository.save(expectedExpense)).thenReturn(expectedExpense);
@@ -105,7 +143,8 @@ public class ExpenseControllerTest {
 		            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
 		            .param("expenseType", expenseType.toString())
 		            .param("name", name)
-		            .param("amount", amount))
+		            .param("amount", amount)
+		            .param("startDate", startDate))
 	            .andExpect(status().is3xxRedirection())
 	            .andExpect(model().attributeExists("expense"))
 	            .andExpect(model().attributeExists("message"))
@@ -115,6 +154,8 @@ public class ExpenseControllerTest {
 	            .andExpect(model().attribute("expense", hasProperty("amount", is(new BigDecimal(amount)))))
 	            .andExpect(redirectedUrl("/expense/?message=Expense+Saved"));
     }
+    
+    
     
     @Test
     public void updateExpenseHappyPath() throws Exception {
