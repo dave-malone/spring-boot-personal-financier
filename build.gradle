@@ -34,8 +34,6 @@ configurations {
     providedRuntime
 }
 
-assemble.dependsOn(jar)
-
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
