@@ -49,7 +49,7 @@ public class IncomeControllerTest {
         		MockMvcRequestBuilders
         			.get("/income/"))
 	            .andExpect(status().isOk())
-	            .andExpect(model().attributeExists("incomesByType"))
+	            .andExpect(model().attributeExists("incomeByFrequency"))
 	            .andExpect(forwardedUrl("income/list"));
     }
     

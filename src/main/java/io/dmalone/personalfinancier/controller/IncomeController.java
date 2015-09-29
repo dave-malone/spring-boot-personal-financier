@@ -44,9 +44,9 @@ public class IncomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model){
-		Map<IncomeFrequency, List<Income>> incomesByType = incomeRepository.getAllIncomesByFrequency();
+		Map<IncomeFrequency, List<Income>> incomeByFrequency = incomeRepository.getAllIncomesByFrequency();
 		
-		model.addAttribute("incomesByType", incomesByType);
+		model.addAttribute("incomeByFrequency", incomeByFrequency);
 		return "income/list";
 	}
 	

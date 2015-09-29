@@ -2,11 +2,13 @@ package io.dmalone.personalfinancier.repository;
 
 import static org.junit.Assert.*;
 import io.dmalone.personalfinancier.PersonalfinancierApplication;
-import io.dmalone.personalfinancier.model.Expense;
-import io.dmalone.personalfinancier.model.ExpenseType;
+import io.dmalone.personalfinancier.model.Income;
+import io.dmalone.personalfinancier.model.IncomeFrequency;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -18,15 +20,23 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = PersonalfinancierApplication.class)
-public class ExpenseRepositoryIntegrationTests {
+public class IncomeRepositoryIntegrationTests {
 
 	@Autowired
-	private ExpenseRepository expenseRepository;
+	private IncomeRepository incomeRepository;
 	
 	@Before
 	public void setUp() throws Exception {
-		assertNotNull(expenseRepository);
-		
+		assertNotNull(incomeRepository);
+	}
+	
+	@After
+	public void tearDown(){
+		incomeRepository.deleteAll();
+	}
+
+	@Test
+	public void testSave() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DATE), 0, 0, 0);
 		System.out.println("current date: " + calendar.getTime());
@@ -37,27 +47,22 @@ public class ExpenseRepositoryIntegrationTests {
 		
 		Date startDate = calendar.getTime();
 		
-		calendar.add(Calendar.DATE, 13);
-		Date endDate = calendar.getTime();
+		Income income = new Income();
+		income.setName("Test Bi Weekly Income");
+		income.setAmount("500");
+		income.setIncomeFrequency(IncomeFrequency.BiWeekly);
+		income.setStartDate(startDate);
 		
-		Expense expense = new Expense();
-		expense.setExpenseType(ExpenseType.Monthly);
-		expense.setStartDate(startDate);
-		expense.setEndDate(endDate);
-		
-		expense = expenseRepository.save(expense);
-		System.out.println("Expense ID: " + expense.getId());
-		assertNotNull(expense.getId());
+		income = incomeRepository.save(income);
+		System.out.println("Expense ID: " + income.getId());
+		assertNotNull(income.getId());
 	}
 	
-	@After
-	public void tearDown(){
-		expenseRepository.deleteAll();
-	}
-
 	@Test
-	public void testSomething() {
-		fail("not yet implemented");
+	public void testGetAllIncomesByFrequency(){
+		Map<IncomeFrequency, List<Income>> incomeByFrequency = incomeRepository.getAllIncomesByFrequency();
+		assertNotNull(incomeByFrequency);
+		assertFalse(incomeByFrequency.isEmpty());
 	}
 
 }

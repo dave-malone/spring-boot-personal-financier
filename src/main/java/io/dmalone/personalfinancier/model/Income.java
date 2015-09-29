@@ -10,15 +10,10 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-@Document(collection="income")
 public class Income {
 
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("MMM-dd-yyyy");
-	
-	@Id 
+
 	private String id;
 	private Date dateCreated = new Date();
 	private String name;
@@ -187,6 +182,10 @@ public class Income {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public void setAmount(String amount) {
+		this.amount = new BigDecimal(amount);
 	}
 	
 }

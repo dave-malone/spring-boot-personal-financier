@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 
 /**
  * Represents an actual point-in-time budget. 
@@ -15,10 +12,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author dmalone
  *
  */
-@Document(collection="budget")
 public class Budget {
 
-	@Id 
 	private String id;
 	private BudgetType budgetType;
 	private Date startDate;

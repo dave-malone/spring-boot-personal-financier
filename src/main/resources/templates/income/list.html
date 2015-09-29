@@ -58,12 +58,11 @@
 				<div class="main">
 					<h1>Viewing all Income by Type</h1>
 					
-					<div th:if="${#lists.isEmpty(entry.value) != true}" th:each="entry : ${incomeByType}">
-						<h3 th:text="${entry.key} + ' Expenses'">Type</h3>
+					<div th:if="${#lists.isEmpty(entry.value) != true}" th:each="entry : ${incomeByFrequency}">
+						<h3 th:text="${entry.key} + ' Income'">Type</h3>
 						<table class="table table-striped">
 							<tr>
 								<th>&nbsp;</th>
-								<th>Name</th>
 								<th>Amount</th>
 								<th th:if="${#strings.equals('Bi-Weekly', entry.key)}">Start Date</th>
 								<th th:if="${#strings.equals('Bi-Weekly', entry.key)}">End Date</th>
@@ -72,7 +71,6 @@
 							</tr>
 							<tr th:each="income : ${entry.value}">
 								<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
-								<td th:text="${income.name}">Name</td>
 								<td th:text="${income.amount}">Amount</td>
 								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">Start Date</td>
 								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">End Date</td>

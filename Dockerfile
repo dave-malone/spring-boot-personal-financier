@@ -2,7 +2,11 @@
 FROM java:8
 MAINTAINER David Malone <dmalone@pivotal.io>
 
-TODO - need to get the mongodb service info injected into this container via ENV vars
+ENV MONGO_USERNAME
+ENV MONGO_PASSWORD
+ENV MONGO_DATABASE personalfinancier
+ENV MONGO_HOST localhost
+ENV MONGO_PORT 27017
 
 VOLUME /tmp
 ADD build/libs/personalfinancier-2.0.jar app.jar

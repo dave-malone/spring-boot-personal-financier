@@ -22,14 +22,14 @@
 			});
 			
 			function toggleIncomeFrequencyOptions(){
-				if('Monthly' == $("select#incomeFrequency").val()){
-					 $('#dateOption').hide()
-					 $('#endDateOption').show()
-					 $('#startDateOption').show()
+				if('One Time' == $("select#incomeFrequency").val()){
+					$('#dateOption').show()
+					$('#endDateOption').hide()
+					$('#startDateOption').hide()
 				 }else if('Bi-Weekly' == $("select#incomeFrequency").val()){
-					 $('#dateOption').show()
-					 $('#endDateOption').hide()
-					 $('#startDateOption').hide()
+					$('#dateOption').hide()
+					$('#endDateOption').show()
+					$('#startDateOption').show()
 				 }
 			}
 		</script>
