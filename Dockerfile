@@ -2,8 +2,8 @@
 FROM java:8
 MAINTAINER David Malone <dmalone@pivotal.io>
 
-ENV MONGO_USERNAME
-ENV MONGO_PASSWORD
+ENV MONGO_USERNAME username
+ENV MONGO_PASSWORD password
 ENV MONGO_DATABASE personalfinancier
 ENV MONGO_HOST localhost
 ENV MONGO_PORT 27017
