@@ -16,15 +16,10 @@ apply plugin: 'eclipse-wtp'
 apply plugin: 'idea'
 apply plugin: 'spring-boot' 
 apply plugin: 'io.spring.dependency-management' 
-apply plugin: 'war'
 
 jar {
 	baseName = 'personalfinancier'
 	version =  '2.0'
-}
-war {
-    baseName = 'personalfinancier'
-    version = '2.0'
 }
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -41,7 +36,6 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
 	compile("org.springframework.boot:spring-boot-starter-data-mongodb")
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
     testCompile("org.springframework.boot:spring-boot-starter-test") 
 }
 
