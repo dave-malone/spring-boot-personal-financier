@@ -65,6 +65,10 @@ th, td
 	border-bottom: 1px solid #ddd;
 }
 
+td:last-child{
+	text-align:right;e
+}
+
 a:link { color: royalblue; }
 a:visited { color: purple; }
 a:focus { color: black; }

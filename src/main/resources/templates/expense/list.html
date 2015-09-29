@@ -63,6 +63,7 @@
 						<table class="table table-striped">
 							<tr>
 								<th>&nbsp;</th>
+								<th>Name</th>
 								<th>Amount</th>
 								<th th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}">Start Date</th>
 								<th th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}">End Date</th>
@@ -72,11 +73,12 @@
 							</tr>
 							<tr th:each="expense : ${entry.value}">
 								<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
+								<td th:text="${expense.name}">Name</td>
 								<td th:text="${expense.amount}">Amount</td>
-								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM, dd, yyyy') : ''}">Start Date</td>
-								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.endDate != null ? #dates.format(expense.endDate, 'MMM, dd, yyyy') : ''}">End Date</td>
+								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
+								<td th:if="${#strings.equals('Monthly', entry.key) or #strings.equals('Per Paycheck', entry.key)}" th:text="${expense.endDate != null ? #dates.format(expense.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
 								<td th:if="${#strings.equals('Monthly', entry.key)}" th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
-								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${expense.dueDate != null ? #dates.format(expense.dueDate, 'MMM, dd, yyyy') ? ''}">Due Date</td>
+								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${expense.dueDate != null ? #dates.format(expense.dueDate, 'MMM dd, yyyy') : ''}">Due Date</td>
 								<td><a th:href="@{'/expense/' + ${expense.id}}" class="delete">Delete</a></td>
 							</tr>
 						</table>
