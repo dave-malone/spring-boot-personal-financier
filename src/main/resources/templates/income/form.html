@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Personal Financier</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}" />
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script>
+			$(function() {
+				toggleIncomeFrequencyOptions();
+				$(".datepicker").datepicker();
+				$("select#incomeFrequency").change(toggleIncomeFrequencyOptions);
+			});
+			
+			function toggleIncomeFrequencyOptions(){
+				if('Monthly' == $("select#incomeFrequency").val()){
+					 $('#dateOption').hide()
+					 $('#endDateOption').show()
+					 $('#startDateOption').show()
+				 }else if('Bi-Weekly' == $("select#incomeFrequency").val()){
+					 $('#dateOption').show()
+					 $('#endDateOption').hide()
+					 $('#startDateOption').hide()
+				 }
+			}
+		</script>
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<h1 class="header-heading">Personal Financier</h1>
+			</div>
+		</div>
+		<div class="nav-bar">
+			<div class="container">
+				<ul class="nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:href="@{/income/}">All Income</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div class="container">
+				<div class="main">
+					<h1 th:text="${(income.id != null ? 'Edit' : 'Create') + ' Income'}">Page Title</h1>
+					<hr />
+					
+					<form action="#" th:action="@{/income/}" th:object="${income}" th:method="${income.id == null ? 'post' : 'put'}">
+						<input th:if="${income.id != null}" type="hidden" th:field="*{id}" />
+						<ul>
+							<li>     
+								<label for="incomeFrequency">Frequency:</label>
+								<select id="incomeFrequency" th:field="${income.incomeFrequency}">
+									<option th:each="incomeFrequency : ${incomeFrequencies}" 
+										th:value="${incomeFrequency}" 
+										th:text="${incomeFrequency}">Income Frequency</option>
+								</select>
+							</li>
+							<li>     
+								<label for="name">Name:</label>
+								<input type="text" th:field="${income.name}"/>
+							</li>
+							<li>
+								<label for="amount">Amount (dollars):</label>
+								<input type="text" th:field="${income.amount}"/>
+							</li>
+							<li id="dateOption">
+								<label for="date">Date:</label>
+								<input type="text" class="datepicker" th:field="${income.date}" />
+							</li>
+							<li id="startDateOption">
+								<label for="startDate">Start Date:</label>
+								<input type="text" class="datepicker" th:field="${income.startDate}" />
+							</li>
+							<li id="endDateOption">
+								<label for="endDate">End Date:</label>
+								<input type="text" class="datepicker" th:field="${income.endDate}" />
+							</li>
+							<li>
+								<input type="submit" />
+							</li>
+						</ul>
+			        </form>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				&copy; Copyright 2015
+			</div>
+		</div>
+	</body>
+</html>

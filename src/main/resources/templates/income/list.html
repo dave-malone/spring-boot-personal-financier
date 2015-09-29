@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Personal Financier</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}"/>
+		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<style>
+			h3{
+				margin-top:2.2em;
+			}
+		</style>
+		
+		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+		<script>
+			$(function() {
+				$('.delete').click(function(){
+					var parentTr = $(this).parent().parent()
+					if(confirm("Are you sure you want to delete this Income?")){
+						$.ajax({
+						    url: $(this).attr("href"),
+						    type: 'DELETE',
+						    success: function(result) {
+						        parentTr.remove();
+						    }
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+		
+		
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<h1 class="header-heading">Personal Financier</h1>
+			</div>
+		</div>
+		<div class="nav-bar">
+			<div class="container">
+				<ul class="nav">
+					<li><a th:href="@{/}">Home</a></li>
+					<li><a th:href="@{/income/create/}">New Income</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div class="container">
+				<div class="main">
+					<h1>Viewing all Income by Type</h1>
+					
+					<div th:if="${#lists.isEmpty(entry.value) != true}" th:each="entry : ${incomeByType}">
+						<h3 th:text="${entry.key} + ' Expenses'">Type</h3>
+						<table class="table table-striped">
+							<tr>
+								<th>&nbsp;</th>
+								<th>Name</th>
+								<th>Amount</th>
+								<th th:if="${#strings.equals('Bi-Weekly', entry.key)}">Start Date</th>
+								<th th:if="${#strings.equals('Bi-Weekly', entry.key)}">End Date</th>
+								<th th:if="${#strings.equals('One Time', entry.key)}">Date</th>
+								<th>&nbsp;</th>
+							</tr>
+							<tr th:each="income : ${entry.value}">
+								<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
+								<td th:text="${income.name}">Name</td>
+								<td th:text="${income.amount}">Amount</td>
+								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">Start Date</td>
+								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">End Date</td>
+								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${income.date != null ? #dates.format(income.date, 'MMM dd, yyyy') : ''}">Date</td>
+								<td><a th:href="@{'/income/' + ${income.id}}" class="delete">Delete</a></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				&copy; Copyright 2015
+			</div>
+		</div>
+	</body>
+</html>
