@@ -2,8 +2,8 @@ package io.dmalone.personalfinancier.conversion;
 
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.Income;
-import io.dmalone.personalfinancier.repository.ExpenseRepository;
-import io.dmalone.personalfinancier.repository.IncomeRepository;
+import io.dmalone.personalfinancier.service.ExpenseService;
+import io.dmalone.personalfinancier.service.IncomeService;
 
 import java.beans.PropertyEditor;
 import java.text.SimpleDateFormat;
@@ -106,14 +106,14 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public ItemWriter<Expense> expenseItemWriter(ExpenseRepository expenseRepository) {
-        ExpenseItemWriter writer = new ExpenseItemWriter(expenseRepository);
+    public ItemWriter<Expense> expenseItemWriter(ExpenseService expenseService) {
+        ExpenseItemWriter writer = new ExpenseItemWriter(expenseService);
         return writer;
     }
     
     @Bean
-    public ItemWriter<Income> incomeItemWriter(IncomeRepository incomeRepository) {
-        IncomeItemWriter writer = new IncomeItemWriter(incomeRepository);
+    public ItemWriter<Income> incomeItemWriter(IncomeService incomeService) {
+        IncomeItemWriter writer = new IncomeItemWriter(incomeService);
         return writer;
     }
 

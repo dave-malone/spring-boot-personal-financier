@@ -26,13 +26,25 @@ public class IncomeRepositoryImpl implements IncomeRepositoryCustom{
 		final Map<IncomeFrequency, List<Income>> incomeByFrequency = new TreeMap<IncomeFrequency, List<Income>>();
 		
 		for(IncomeFrequency incomeFrequency : IncomeFrequency.values()){
-			List<Income> expenses = mongoTemplate.find(
+			List<Income> income = mongoTemplate.find(
 					query(where("incomeFrequency").is(incomeFrequency)), 
 					Income.class);
-			incomeByFrequency.put(incomeFrequency, expenses);
+			incomeByFrequency.put(incomeFrequency, income);
 		}
 		
 		return incomeByFrequency;
+	}
+
+	@Override
+	public List<Income> getActiveIncome() {
+		List<Income> activeIncome = mongoTemplate.find(query(where("active").is(true)), Income.class);
+		return activeIncome;
+	}
+
+	@Override
+	public Income getPrimaryIncome() {
+		Income income = mongoTemplate.findOne(query(where("primary").is(true)), Income.class);
+		return income;
 	}
 	
 }

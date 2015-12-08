@@ -2,7 +2,7 @@ package io.dmalone.personalfinancier.controller;
 
 import io.dmalone.personalfinancier.model.Income;
 import io.dmalone.personalfinancier.model.IncomeFrequency;
-import io.dmalone.personalfinancier.repository.IncomeRepository;
+import io.dmalone.personalfinancier.service.IncomeService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class IncomeController {
 
 	private final Log log = LogFactory.getLog(IncomeController.class);
-	private final IncomeRepository incomeRepository;
+	private final IncomeService incomeService;
 
 	@Autowired
-	public IncomeController(IncomeRepository incomeRepository) {
-		this.incomeRepository = incomeRepository;
+	public IncomeController(IncomeService incomeService) {
+		this.incomeService = incomeService;
 	}
 	
 	@InitBinder
@@ -44,7 +44,7 @@ public class IncomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model){
-		Map<IncomeFrequency, List<Income>> incomeByFrequency = incomeRepository.getAllIncomesByFrequency();
+		Map<IncomeFrequency, List<Income>> incomeByFrequency = incomeService.getAllIncomesByFrequency();
 		
 		model.addAttribute("incomeByFrequency", incomeByFrequency);
 		return "income/list";
@@ -61,7 +61,7 @@ public class IncomeController {
 	
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String create(@PathVariable("id") String id, Model model){
-		Income income = incomeRepository.findOne(id);
+		Income income = incomeService.findOne(id);
 		
 		if(income == null){
 			model.addAttribute("message", "Income for ID " + id + " could not be found");
@@ -75,20 +75,20 @@ public class IncomeController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody String delete(@PathVariable("id") String id){
-		Income income = incomeRepository.findOne(id);
+		Income income = incomeService.findOne(id);
 		
 		if(income == null){
 			return "Income for ID " + id + " could not be found";
 		}
 		
-		incomeRepository.delete(id);
+		incomeService.delete(id);
 		return "Income " + id + " was deleted";
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String save(Income income, Model model){
 		log.debug("Saving income: " + income);
-		income = incomeRepository.save(income);
+		income = incomeService.save(income);
 		model.addAttribute("income", income);
 		model.addAttribute("message", "Income Saved");
 		
@@ -98,7 +98,7 @@ public class IncomeController {
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	public String update(Income income, Model model){
 		log.debug("Updating income: " + income);
-		income = incomeRepository.save(income);
+		income = incomeService.save(income);
 		model.addAttribute("income", income);
 		model.addAttribute("message", "Income Updated");
 		

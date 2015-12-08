@@ -9,5 +9,7 @@ import java.util.Map;
 public interface IncomeRepositoryCustom {
 
 	public Map<IncomeFrequency, List<Income>> getAllIncomesByFrequency();
+	public List<Income> getActiveIncome();
+	Income getPrimaryIncome();
 	
 }

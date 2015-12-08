@@ -1,7 +1,11 @@
 package io.dmalone.personalfinancier.service;
 
 import io.dmalone.personalfinancier.model.Income;
+import io.dmalone.personalfinancier.model.IncomeFrequency;
 import io.dmalone.personalfinancier.repository.IncomeRepository;
+
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,12 +21,8 @@ public class IncomeService {
 		this.incomeRepository = incomeRepository;
 	}
 
-	public <S extends Income> S save(S entity) {
-		return incomeRepository.save(entity);
-	}
-
-	public <S extends Income> Iterable<S> save(Iterable<S> entities) {
-		return incomeRepository.save(entities);
+	public <S extends Income> S save(S income) {
+		return incomeRepository.save(income);
 	}
 
 	public Income findOne(String id) {
@@ -60,7 +60,13 @@ public class IncomeService {
 	public void deleteAll() {
 		incomeRepository.deleteAll();
 	}
-	
-	
+
+	public Map<IncomeFrequency, List<Income>> getAllIncomesByFrequency() {
+		return incomeRepository.getAllIncomesByFrequency();
+	}
+
+	public List<Income> getActiveIncome() {
+		return incomeRepository.getActiveIncome();
+	}
 	
 }

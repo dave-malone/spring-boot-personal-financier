@@ -33,7 +33,66 @@
 					<h1>Welcome to your Personal Financier</h1>
 					<hr />
 
-					 <p th:text="'Hello, ' + ${name} + '!'" />
+					<p th:text="${message}" />
+
+					<p th:text="${currentBudget.budgetType} + ' Budget for ' + ${currentBudget.startDate != null ? #dates.format(currentBudget.startDate, 'MMM dd') : ''} + ' - ' + ${currentBudget.endDate != null ? #dates.format(currentBudget.endDate, 'MMM dd') : ''}" />
+					
+					<h2>Planned Income</h2>
+					<table class="table table-striped">
+						<tr>
+							<th>&nbsp;</th>
+							<th>Type</th>
+							<th>Frequency</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Date</th>
+						</tr>
+						<tr th:each="income : ${currentBudget.plannedIncome}">
+							<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
+							<td th:text="${income.incomeFrequency}">Frequency</td>
+							<td th:text="${income.amount}">Amount</td>
+							<td th:text="${income.startDate != null ? #dates.format(income.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
+							<td th:text="${income.endDate != null ? #dates.format(income.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
+							<td th:text="${income.date != null ? #dates.format(income.date, 'MMM dd, yyyy') : ''}">Date</td>
+						</tr>
+					</table>
+					
+					
+					<h2>Planned Expenses</h2>
+					<table class="table table-striped">
+						<tr>
+							<th>&nbsp;</th>
+							<th>Type</th>
+							<th>Amount</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Day of Month Due</th>
+							<th>Due Date</th>
+						</tr>
+						<tr th:each="expense : ${currentBudget.plannedExpenses}">
+							<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
+							<td th:text="${expense.expenseType}">Type</td>
+							<td th:text="${expense.amount}">Amount</td>
+							<td th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
+							<td th:text="${expense.endDate != null ? #dates.format(expense.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
+							<td th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
+							<td th:text="${expense.dueDate != null ? #dates.format(expense.dueDate, 'MMM dd, yyyy') : ''}">Due Date</td>
+						</tr>
+					</table>
+					
+					<h2>Summary</h2>
+					<table class="table table-striped">
+						<tr>
+							<th>Total Income</th>
+							<th>Total Expenses</th>
+							<th>Remainder</th>
+						</tr>
+						<tr>
+							<td th:text="${currentBudget.totalIncome}" />
+							<td th:text="${currentBudget.totalExpenses}" />
+							<td th:text="${currentBudget.remainderAfterExpenses}" />
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>

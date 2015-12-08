@@ -2,11 +2,12 @@ package io.dmalone.personalfinancier.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import io.dmalone.personalfinancier.model.Budget;
 import io.dmalone.personalfinancier.repository.BudgetRepository;
+import io.dmalone.personalfinancier.repository.ExpenseRepository;
+import io.dmalone.personalfinancier.repository.IncomeRepository;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -17,12 +18,16 @@ import org.junit.Test;
 public class BudgetServiceTest {
 
 	private BudgetRepository mockBudgetRepository;
+	private ExpenseRepository mockExpenseRepository;
+	private IncomeRepository mockIncomeRepository;
 	private BudgetService budgetService;
 
 	@Before
 	public void setUp() throws Exception {
 		mockBudgetRepository = mock(BudgetRepository.class);
-		budgetService = new BudgetService(mockBudgetRepository);
+		mockExpenseRepository = mock(ExpenseRepository.class);
+		mockIncomeRepository = mock(IncomeRepository.class);
+		budgetService = new BudgetService(mockBudgetRepository, mockExpenseRepository, mockIncomeRepository);
 	}
 
 	@Test

@@ -1,13 +1,18 @@
 package io.dmalone.personalfinancier.service;
 
 import io.dmalone.personalfinancier.model.Budget;
+import io.dmalone.personalfinancier.model.BudgetType;
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
 import io.dmalone.personalfinancier.model.Income;
 import io.dmalone.personalfinancier.model.IncomeFrequency;
 import io.dmalone.personalfinancier.repository.BudgetRepository;
+import io.dmalone.personalfinancier.repository.ExpenseRepository;
+import io.dmalone.personalfinancier.repository.IncomeRepository;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,24 +21,74 @@ import org.springframework.stereotype.Service;
 public class BudgetService {
 
 	private final BudgetRepository budgetRepository;
+	private final ExpenseRepository expenseRepository;
+	private final IncomeRepository incomeRepository;
+
 
 	@Autowired
-	public BudgetService(BudgetRepository budgetRepository) {
+	public BudgetService(BudgetRepository budgetRepository, ExpenseRepository expenseRepository, IncomeRepository incomeRepository) {
 		this.budgetRepository = budgetRepository;
+		this.incomeRepository = incomeRepository;
+		this.expenseRepository = expenseRepository;
 	}
 	
 	public Budget getCurrentBudget(){
-		Calendar calendar = Calendar.getInstance();
+		final Date today = getZeroedOutCalendar().getTime();
+		Budget currentBudget = this.budgetRepository.getByDate(today);
+		
+		if(currentBudget == null){
+			Income primaryIncome = incomeRepository.getPrimaryIncome();
+			currentBudget = generateBudget(today, primaryIncome);
+		}
+		
+		return currentBudget;
+	}
+	
+	
+	private Budget generateBudget(Date forDate, Income primaryIncome){
+		final Budget budget = new Budget();
+		budget.addPlannedIncome(primaryIncome);
+		
+		final Calendar calendar = getZeroedOutCalendar();
+		
+		int numberOfDaysInPayPeriod = 0;
+		
+		if(IncomeFrequency.BiWeekly == primaryIncome.getIncomeFrequency()){
+			budget.setBudgetType(BudgetType.BiWeekly);
+			numberOfDaysInPayPeriod = 13;
+		}
+		
+		final Date incomeStartDate = primaryIncome.getStartDate();
+		
+		calendar.setTime(incomeStartDate);
+		Date budgetStartDate = calendar.getTime();
+		
+		calendar.add(Calendar.DATE, numberOfDaysInPayPeriod);
+		Date budgetEndDate = calendar.getTime();
+		
+		while((forDate.compareTo(budgetStartDate) >= 0 && forDate.compareTo(budgetEndDate) <= 0) != true){
+			calendar.add(Calendar.DATE, 1);
+			budgetStartDate = calendar.getTime();
+			calendar.add(Calendar.DATE, numberOfDaysInPayPeriod);
+			budgetEndDate = calendar.getTime();
+		}
+		
+		budget.setStartDate(budgetStartDate);
+		budget.setEndDate(budgetEndDate);
+		
+		List<Expense> expenses = expenseRepository.getPlannedExpensesBetweenDates(budgetStartDate, budgetEndDate);
+		budget.addPlannedExpenses(expenses);
+		
+		return budget;
+	}
+
+	private Calendar getZeroedOutCalendar() {
+		final Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.HOUR, 0);
 		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
-		
-		//TODO - if the current budget is "empty" i.e. lacks income/expenses,
-		//then query for planned income and expenses for the current budget
-		//period and add to the current budget
-
-		return this.budgetRepository.getByDate(calendar.getTime());
+		return calendar;
 	}
 	
 	public void addExpense(Expense expense){
@@ -54,15 +109,7 @@ public class BudgetService {
 	}
 	
 	public void addIncome(Income income){
-		//income really drives the creation of a time boxed budget.
 		
-		if(IncomeFrequency.OneTime == income.getIncomeFrequency()){
-			
-		}else if(IncomeFrequency.BiWeekly == income.getIncomeFrequency()){
-			
-		}else if(IncomeFrequency.SemiMonthly == income.getIncomeFrequency()){
-			
-		}
 	}
 	
 	public void removeExpense(Expense expense){

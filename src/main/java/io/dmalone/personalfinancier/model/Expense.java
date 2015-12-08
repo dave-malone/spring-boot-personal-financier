@@ -31,6 +31,7 @@ public class Expense {
 	private Date dueDate;
 	
 	private boolean active = true;
+	private boolean autopay;
 	
 	/** only used for recurring ExpenseTypes such as Monthly or Per Paycheck */
 	private Date startDate;
@@ -183,5 +184,13 @@ public class Expense {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+
+	public boolean isAutopay() {
+		return autopay;
+	}
+
+	public void setAutopay(boolean autopay) {
+		this.autopay = autopay;
 	}
 }

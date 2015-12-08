@@ -2,7 +2,7 @@ package io.dmalone.personalfinancier.controller;
 
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
-import io.dmalone.personalfinancier.repository.ExpenseRepository;
+import io.dmalone.personalfinancier.service.ExpenseService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,12 +26,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/expense")
 public class ExpenseController {
 
-	private final ExpenseRepository expenseRepository;
+	private final ExpenseService expenseService;
 	private final Log log = LogFactory.getLog(ExpenseController.class);
 
 	@Autowired
-	public ExpenseController(ExpenseRepository expenseRepository) {
-		this.expenseRepository = expenseRepository;
+	public ExpenseController(ExpenseService expenseService) {
+		this.expenseService = expenseService;
 	}
 	
 	@InitBinder
@@ -44,7 +44,7 @@ public class ExpenseController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model){
-		Map<ExpenseType, List<Expense>> expensesByType = expenseRepository.getAllExpensesByType();
+		Map<ExpenseType, List<Expense>> expensesByType = expenseService.getAllExpensesByType();
 		
 		model.addAttribute("expensesByType", expensesByType);
 		return "expense/list";
@@ -61,7 +61,7 @@ public class ExpenseController {
 	
 	@RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
 	public String create(@PathVariable("id") String id, Model model){
-		Expense expense = expenseRepository.findOne(id);
+		Expense expense = expenseService.findOne(id);
 		
 		if(expense == null){
 			model.addAttribute("message", "Expense for ID " + id + " could not be found");
@@ -75,20 +75,20 @@ public class ExpenseController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public @ResponseBody String delete(@PathVariable("id") String id){
-		Expense expense = expenseRepository.findOne(id);
+		Expense expense = expenseService.findOne(id);
 		
 		if(expense == null){
 			return "Expense for ID " + id + " could not be found";
 		}
 		
-		expenseRepository.delete(id);
+		expenseService.delete(id);
 		return "Expense " + id + " was deleted";
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.POST)
 	public String save(Expense expense, Model model){
 		log.debug(expense);
-		expense = expenseRepository.save(expense);
+		expense = expenseService.save(expense);
 		model.addAttribute("expense", expense);
 		model.addAttribute("message", "Expense Saved");
 		
@@ -98,7 +98,7 @@ public class ExpenseController {
 	@RequestMapping(value = "/", method = RequestMethod.PUT)
 	public String update(Expense expense, Model model){
 		log.debug(expense);
-		expense = expenseRepository.save(expense);
+		expense = expenseService.save(expense);
 		model.addAttribute("expense", expense);
 		model.addAttribute("message", "Expense Updated");
 		

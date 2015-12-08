@@ -73,8 +73,8 @@
 							<tr th:each="income : ${entry.value}">
 								<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
 								<td th:text="${income.amount}">Amount</td>
-								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">Start Date</td>
-								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}">End Date</td>
+								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}" th:text="${income.startDate != null ? #dates.format(income.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
+								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}" th:text="${income.endDate != null ? #dates.format(income.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
 								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${income.date != null ? #dates.format(income.date, 'MMM dd, yyyy') : ''}">Date</td>
 								<td><a th:href="@{'/income/' + ${income.id}}" class="delete">Delete</a></td>
 							</tr>

@@ -22,6 +22,8 @@ public class Income {
 	private Date date;
 	private Date startDate;
 	private Date endDate;
+	private boolean active;
+	private boolean primary;
 
 	public Income(){
 		//default constructor
@@ -186,6 +188,22 @@ public class Income {
 
 	public void setAmount(String amount) {
 		this.amount = new BigDecimal(amount);
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public boolean isPrimary() {
+		return primary;
+	}
+
+	public void setPrimary(boolean primary) {
+		this.primary = primary;
 	}
 	
 }

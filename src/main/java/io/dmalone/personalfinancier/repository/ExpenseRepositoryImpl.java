@@ -5,6 +5,8 @@ import static org.springframework.data.mongodb.core.query.Query.query;
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -33,6 +35,33 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom{
 		}
 		
 		return expensesByType;
+	}
+
+
+	@Override
+	public List<Expense> getActiveExpenses() {
+		List<Expense> activeExpenses = mongoTemplate.find(query(where("active").is(true)), Expense.class);
+		return activeExpenses;
+	}
+
+
+	@Override
+	public List<Expense> getPlannedExpensesBetweenDates(Date startDate, Date endDate) {
+		final List<Expense> activeExpenses = new ArrayList<Expense>();
+		
+		//TODO - project query based on dates within budget period
+		//Integer dayOfMonthDue & Date startDate & Date endDate
+		List<Expense> monthlyExpenses = mongoTemplate.find(query(where("expenseType").is(ExpenseType.Monthly).and("active").is(true)), Expense.class);
+		//Date startDate & Date endDate
+		List<Expense> perPaycheckExpenses = mongoTemplate.find(query(where("expenseType").is(ExpenseType.PerPaycheck).and("active").is(true)), Expense.class);
+		//Date dueDate
+		List<Expense> oneTimeExpenses = mongoTemplate.find(query(where("expenseType").is(ExpenseType.OneTime).and("active").is(true).and("dueDate").gte(startDate).lte(endDate)), Expense.class);
+		
+		activeExpenses.addAll(perPaycheckExpenses);
+		activeExpenses.addAll(monthlyExpenses);
+		activeExpenses.addAll(oneTimeExpenses);
+		
+		return activeExpenses;
 	}
 	
 }

@@ -4,11 +4,15 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import io.dmalone.personalfinancier.PersonalfinancierApplication;
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
-import io.dmalone.personalfinancier.repository.ExpenseRepository;
+import io.dmalone.personalfinancier.service.ExpenseService;
 
 import java.math.BigDecimal;
 
@@ -33,13 +37,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 public class ExpenseControllerTest {
     
 	private MockMvc mvc;
-	private ExpenseRepository expenseRepository;
+	private ExpenseService expenseService;
 
     @Before
     public void setUp() throws Exception {
-    	expenseRepository = mock(ExpenseRepository.class);
+    	expenseService = mock(ExpenseService.class);
         mvc = MockMvcBuilders.standaloneSetup(
-                new ExpenseController(expenseRepository))
+                new ExpenseController(expenseService))
             .build();
     }
 
@@ -75,7 +79,7 @@ public class ExpenseControllerTest {
 		Expense expectedExpense = new Expense(name, amount, expenseType);
 		expectedExpense.setId(expenseId);
 		
-		when(expenseRepository.findOne(expenseId)).thenReturn(expectedExpense);
+		when(expenseService.findOne(expenseId)).thenReturn(expectedExpense);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -101,7 +105,7 @@ public class ExpenseControllerTest {
 		Expense expectedExpense = new Expense(name, amount, expenseType);
 		expectedExpense.setId(expenseId);
 		
-		when(expenseRepository.findOne(expenseId)).thenReturn(expectedExpense);
+		when(expenseService.findOne(expenseId)).thenReturn(expectedExpense);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -117,7 +121,7 @@ public class ExpenseControllerTest {
 		
 		Expense expectedExpense = null;
 		
-		when(expenseRepository.findOne(expenseId)).thenReturn(expectedExpense);
+		when(expenseService.findOne(expenseId)).thenReturn(expectedExpense);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -135,7 +139,7 @@ public class ExpenseControllerTest {
 		String startDate = "09/28/2015";
 		
 		Expense expectedExpense = new Expense(name, amount, expenseType);
-		when(expenseRepository.save(expectedExpense)).thenReturn(expectedExpense);
+		when(expenseService.save(expectedExpense)).thenReturn(expectedExpense);
 		
 		mvc.perform(
         		MockMvcRequestBuilders
@@ -166,7 +170,7 @@ public class ExpenseControllerTest {
 		
 		Expense expectedExpense = new Expense(name, amount, expenseType);
 		expectedExpense.setId(expenseId);
-		when(expenseRepository.save(expectedExpense)).thenReturn(expectedExpense);
+		when(expenseService.save(expectedExpense)).thenReturn(expectedExpense);
 		
 		mvc.perform(
         		MockMvcRequestBuilders

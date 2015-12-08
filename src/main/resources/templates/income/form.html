@@ -70,6 +70,14 @@
 								<label for="name">Name:</label>
 								<input type="text" th:field="${income.name}"/>
 							</li>
+							<li>     
+								<label for="active">Active:</label>
+								<input type="checkbox" th:field="${income.active}" th:value="${income.active}"/>
+							</li>
+							<li>     
+								<label for="primary">Primary:</label>
+								<input type="checkbox" th:field="${income.primary}" th:value="${income.primary}"/>
+							</li>
 							<li>
 								<label for="amount">Amount (dollars):</label>
 								<input type="text" th:field="${income.amount}"/>

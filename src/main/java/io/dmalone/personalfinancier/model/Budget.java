@@ -3,6 +3,7 @@ package io.dmalone.personalfinancier.model;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -148,6 +149,22 @@ public class Budget {
 	
 	public void addUnplannedExpense(Expense expense) {
 		this.unplannedExpenses.add(expense);
+	}
+	
+	public boolean hasExpenses(){
+		return this.unplannedExpenses.isEmpty() != true && this.plannedExpenses.isEmpty() != true;
+	}
+	
+	public boolean hasIncome(){
+		return this.unplannedIncome.isEmpty() != true && this.plannedIncome.isEmpty() != true;
+	}
+
+	public void addPlannedIncome(List<Income> plannedIncome) {
+		this.plannedIncome.addAll(plannedIncome);
+	}
+
+	public void addPlannedExpenses(List<Expense> plannedExpenses) {
+		this.plannedExpenses.addAll(plannedExpenses);
 	}
 	
 }

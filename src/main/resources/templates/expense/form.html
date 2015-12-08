@@ -75,7 +75,15 @@
 							</li>
 							<li>     
 								<label for="name">Name:</label>
-								<input type="text" th:field="${expense.name}"/>
+								<input type="text" th:field="${expense.name}" th:value="${expense.name}"/>
+							</li>
+							<li>     
+								<label for="active">Active:</label>
+								<input type="checkbox" th:field="${expense.active}" th:value="${expense.active}"/>
+							</li>
+							<li>     
+								<label for="autopay">Autopay:</label>
+								<input type="checkbox" th:field="${expense.autopay}"/>
 							</li>
 							<li>
 								<label for="amount">Amount (dollars):</label>

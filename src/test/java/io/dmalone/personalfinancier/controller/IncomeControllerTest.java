@@ -4,11 +4,15 @@ import static org.hamcrest.Matchers.hasProperty;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import io.dmalone.personalfinancier.PersonalfinancierApplication;
 import io.dmalone.personalfinancier.model.Income;
 import io.dmalone.personalfinancier.model.IncomeFrequency;
-import io.dmalone.personalfinancier.repository.IncomeRepository;
+import io.dmalone.personalfinancier.service.IncomeService;
 
 import java.math.BigDecimal;
 
@@ -33,13 +37,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 public class IncomeControllerTest {
     
 	private MockMvc mvc;
-	private IncomeRepository incomeRepository;
+	private IncomeService incomeService;
 
     @Before
     public void setUp() throws Exception {
-    	incomeRepository = mock(IncomeRepository.class);
+    	incomeService = mock(IncomeService.class);
         mvc = MockMvcBuilders.standaloneSetup(
-                new IncomeController(incomeRepository))
+                new IncomeController(incomeService))
             .build();
     }
 
@@ -75,7 +79,7 @@ public class IncomeControllerTest {
 		Income expectedIncome = new Income(name, amount, incomeFrequency);
 		expectedIncome.setId(incomeId);
 		
-		when(incomeRepository.findOne(incomeId)).thenReturn(expectedIncome);
+		when(incomeService.findOne(incomeId)).thenReturn(expectedIncome);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -101,7 +105,7 @@ public class IncomeControllerTest {
 		Income expectedIncome = new Income(name, amount, incomeFrequency);
 		expectedIncome.setId(incomeId);
 		
-		when(incomeRepository.findOne(incomeId)).thenReturn(expectedIncome);
+		when(incomeService.findOne(incomeId)).thenReturn(expectedIncome);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -117,7 +121,7 @@ public class IncomeControllerTest {
 		
 		Income expectedIncome = null;
 		
-		when(incomeRepository.findOne(incomeId)).thenReturn(expectedIncome);
+		when(incomeService.findOne(incomeId)).thenReturn(expectedIncome);
     	
         mvc.perform(
         		MockMvcRequestBuilders
@@ -135,7 +139,7 @@ public class IncomeControllerTest {
 		String startDate = "09/28/2015";
 		
 		Income expectedIncome = new Income(name, amount, incomeFrequency);
-		when(incomeRepository.save(expectedIncome)).thenReturn(expectedIncome);
+		when(incomeService.save(expectedIncome)).thenReturn(expectedIncome);
 		
 		mvc.perform(
         		MockMvcRequestBuilders
@@ -166,7 +170,7 @@ public class IncomeControllerTest {
 		
 		Income expectedIncome = new Income(name, amount, incomeFrequency);
 		expectedIncome.setId(incomeId);
-		when(incomeRepository.save(expectedIncome)).thenReturn(expectedIncome);
+		when(incomeService.save(expectedIncome)).thenReturn(expectedIncome);
 		
 		mvc.perform(
         		MockMvcRequestBuilders

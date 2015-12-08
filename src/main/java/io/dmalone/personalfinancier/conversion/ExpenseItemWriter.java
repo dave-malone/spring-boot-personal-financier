@@ -1,7 +1,7 @@
 package io.dmalone.personalfinancier.conversion;
 
 import io.dmalone.personalfinancier.model.Expense;
-import io.dmalone.personalfinancier.repository.ExpenseRepository;
+import io.dmalone.personalfinancier.service.ExpenseService;
 
 import java.util.List;
 
@@ -12,18 +12,17 @@ import org.springframework.batch.item.ItemWriter;
 public class ExpenseItemWriter implements ItemWriter<Expense> {
 
 	private final Log log = LogFactory.getLog(ExpenseItemWriter.class);
+
+	private final ExpenseService expenseService;
 	
-	
-	private final ExpenseRepository expenseRepository;
-	
-	public ExpenseItemWriter(ExpenseRepository expenseRepository) {
-		this.expenseRepository = expenseRepository;
+	public ExpenseItemWriter(ExpenseService expenseService) {
+		this.expenseService = expenseService;
 	}
 
 	@Override
 	public void write(List<? extends Expense> items) throws Exception {
 		log.debug("writing expenses: " + items);
-		expenseRepository.save(items);
+		expenseService.save(items);
 	}
 
 }
