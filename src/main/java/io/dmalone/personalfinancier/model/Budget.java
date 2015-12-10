@@ -1,10 +1,12 @@
 package io.dmalone.personalfinancier.model;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 
 /**
@@ -19,6 +21,7 @@ public class Budget {
 	private BudgetType budgetType;
 	private Date startDate;
 	private Date endDate;
+	private Integer numberOfDaysWithinPayPeriod;
 	
 	private Set<Expense> plannedExpenses = new HashSet<Expense>();
 	private Set<Income> plannedIncome = new HashSet<Income>();
@@ -165,6 +168,45 @@ public class Budget {
 
 	public void addPlannedExpenses(List<Expense> plannedExpenses) {
 		this.plannedExpenses.addAll(plannedExpenses);
+	}
+	
+	public Set<Date> getDatesInPayPeriod(){
+		final Set<Date> datesInPayPeriod = new HashSet<Date>();
+		
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(this.startDate);
+		
+		for(int i = 0; i < this.numberOfDaysWithinPayPeriod; i++){
+			datesInPayPeriod.add(calendar.getTime());
+			calendar.add(Calendar.DATE, 1);
+		}
+		
+		return datesInPayPeriod;
+	}
+
+	public Set<Integer> getDaysOfMonthWithinPeriod() {
+		final Set<Integer> daysWithinPeriod = new TreeSet<Integer>();
+		
+		final Calendar calendar = Calendar.getInstance();
+		
+		for(Date date : getDatesInPayPeriod()){
+			calendar.setTime(date);
+			daysWithinPeriod.add(calendar.get(Calendar.DATE));
+		}
+		
+		return daysWithinPeriod;
+	}
+
+	public Integer getNumberOfDaysWithinPayPeriod() {
+		return numberOfDaysWithinPayPeriod;
+	}
+	
+	public void setNumberOfDaysWithinPayPeriod(int numberOfDaysWithinPayPeriod) {
+		this.numberOfDaysWithinPayPeriod = new Integer(numberOfDaysWithinPayPeriod);
+	}
+
+	public void setNumberOfDaysWithinPayPeriod(Integer numberOfDaysWithinPayPeriod) {
+		this.numberOfDaysWithinPayPeriod = numberOfDaysWithinPayPeriod;
 	}
 	
 }

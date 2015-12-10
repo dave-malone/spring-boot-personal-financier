@@ -1,8 +1,16 @@
 package io.dmalone.personalfinancier.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,10 +18,18 @@ import org.junit.Test;
 public class BudgetTest {
 
 	private Budget budget;
+	private DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 	
 	@Before
 	public void setUp() throws Exception {
 		budget = new Budget();
+		budget.setNumberOfDaysWithinPayPeriod(14);
+		
+		Date startDate = dateFormat.parse("02/06/2015");
+		Date endDate = dateFormat.parse("02/19/2015");
+		
+		budget.setStartDate(startDate);
+		budget.setEndDate(endDate);
 	}
 
 	@Test
@@ -87,8 +103,37 @@ public class BudgetTest {
 		BigDecimal remainderAfterExpenses = budget.getRemainderAfterExpenses();
 		assertNotNull("remainder after expenses should not be null", remainderAfterExpenses);
 		assertEquals("remainder after expenses did not add up to the correct amount", new BigDecimal("0.00"), remainderAfterExpenses);
-		
-		
 	}
 
+	@Test
+	public void testGetDatesInPayPeriod() throws Exception{
+		Set<Date> expectedDates = new HashSet<Date>();
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(budget.getStartDate());
+		
+		for(int i = 0; i < budget.getNumberOfDaysWithinPayPeriod(); i++){
+			expectedDates.add(calendar.getTime());
+			calendar.add(Calendar.DATE, 1);
+		}
+		
+		assertEquals(expectedDates.size(), budget.getDatesInPayPeriod().size());
+		assertEquals(expectedDates, budget.getDatesInPayPeriod());
+	}
+	
+	@Test
+	public void testGetDaysOfMonthWithinPeriod(){
+		Set<Integer> expectedDays = new TreeSet<Integer>();
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(budget.getStartDate());
+		
+		for(int i = 0; i < budget.getNumberOfDaysWithinPayPeriod(); i++){
+			expectedDays.add(calendar.get(Calendar.DATE));
+			calendar.add(Calendar.DATE, 1);
+		}
+		
+		assertEquals(expectedDays.size(), budget.getDaysOfMonthWithinPeriod().size());
+		assertEquals(budget.getDaysOfMonthWithinPeriod(), expectedDays);
+	}
+	
 }

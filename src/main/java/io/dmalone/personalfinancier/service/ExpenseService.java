@@ -1,9 +1,11 @@
 package io.dmalone.personalfinancier.service;
 
+import io.dmalone.personalfinancier.model.Budget;
 import io.dmalone.personalfinancier.model.Expense;
 import io.dmalone.personalfinancier.model.ExpenseType;
 import io.dmalone.personalfinancier.repository.ExpenseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -81,6 +83,16 @@ public class ExpenseService {
 
 	public List<Expense> getActiveExpenses() {
 		return expenseRepository.getActiveExpenses();
+	}
+
+	public List<Expense> getPlannedExpensesForBudget(Budget budget) {
+		final List<Expense> activeExpenses = new ArrayList<Expense>();
+		
+		activeExpenses.addAll(expenseRepository.getActivePerPaycheckExpenses(budget));
+		activeExpenses.addAll(expenseRepository.getActiveMonthlyExpenses(budget));
+		activeExpenses.addAll(expenseRepository.getActiveOneTimeExpenses(budget));
+		
+		return activeExpenses;
 	}
 	
 }

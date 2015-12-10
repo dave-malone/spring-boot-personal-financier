@@ -7,7 +7,6 @@ import io.dmalone.personalfinancier.model.ExpenseType;
 import io.dmalone.personalfinancier.model.Income;
 import io.dmalone.personalfinancier.model.IncomeFrequency;
 import io.dmalone.personalfinancier.repository.BudgetRepository;
-import io.dmalone.personalfinancier.repository.ExpenseRepository;
 import io.dmalone.personalfinancier.repository.IncomeRepository;
 
 import java.util.Calendar;
@@ -21,15 +20,14 @@ import org.springframework.stereotype.Service;
 public class BudgetService {
 
 	private final BudgetRepository budgetRepository;
-	private final ExpenseRepository expenseRepository;
+	private final ExpenseService expenseService;
 	private final IncomeRepository incomeRepository;
 
-
 	@Autowired
-	public BudgetService(BudgetRepository budgetRepository, ExpenseRepository expenseRepository, IncomeRepository incomeRepository) {
+	public BudgetService(BudgetRepository budgetRepository, ExpenseService expenseService, IncomeRepository incomeRepository) {
 		this.budgetRepository = budgetRepository;
 		this.incomeRepository = incomeRepository;
-		this.expenseRepository = expenseRepository;
+		this.expenseService = expenseService;
 	}
 	
 	public Budget getCurrentBudget(){
@@ -58,6 +56,8 @@ public class BudgetService {
 			numberOfDaysInPayPeriod = 13;
 		}
 		
+		budget.setNumberOfDaysWithinPayPeriod(numberOfDaysInPayPeriod);
+		
 		final Date incomeStartDate = primaryIncome.getStartDate();
 		
 		calendar.setTime(incomeStartDate);
@@ -76,7 +76,7 @@ public class BudgetService {
 		budget.setStartDate(budgetStartDate);
 		budget.setEndDate(budgetEndDate);
 		
-		List<Expense> expenses = expenseRepository.getPlannedExpensesBetweenDates(budgetStartDate, budgetEndDate);
+		List<Expense> expenses = expenseService.getPlannedExpensesForBudget(budget);
 		budget.addPlannedExpenses(expenses);
 		
 		return budget;
