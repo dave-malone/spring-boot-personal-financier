@@ -63,5 +63,25 @@ public class IncomeTest {
 		assertTrue(payDatesInMay2015.contains(secondExpectedPayDate));
 		assertTrue(payDatesInMay2015.contains(thirdExpectedPayDate));
 	}
+	
+	@Test
+	public void testGetPayPeriodStartAndEndDates() throws Exception{
+		Date incomeStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
+		Date today = Income.DATE_FORMAT.parse("Feb-08-2015");
+		Date expectedStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
+		Date expectedEndDate = Income.DATE_FORMAT.parse("Feb-20-2015");
+		
+		Income income = new Income();
+		income.setIncomeFrequency(IncomeFrequency.BiWeekly);
+		income.setStartDate(incomeStartDate);
+		income.setActive(true);
+		income.setPrimary(true);
+		
+		Date[] startAndEndDates = income.getPayPeriodStartAndEndDates(today);
+		assertNotNull(startAndEndDates);
+		assertEquals(2, startAndEndDates.length);
+		assertEquals(expectedStartDate, startAndEndDates[0]);
+		assertEquals(expectedEndDate, startAndEndDates[1]);
+	}
 
 }

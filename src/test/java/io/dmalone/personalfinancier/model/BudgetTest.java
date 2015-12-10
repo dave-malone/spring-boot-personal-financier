@@ -136,4 +136,26 @@ public class BudgetTest {
 		assertEquals(budget.getDaysOfMonthWithinPeriod(), expectedDays);
 	}
 	
+	@Test 
+	public void testFromPrimaryIncome() throws Exception{
+		Date incomeStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
+		
+		Income income = new Income();
+		income.setActive(true);
+		income.setPrimary(true);
+		income.setIncomeFrequency(IncomeFrequency.BiWeekly);
+		income.setStartDate(incomeStartDate);
+		
+		Date today = Income.DATE_FORMAT.parse("Feb-08-2015");
+		Date expectedStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
+		Date expectedEndDate = Income.DATE_FORMAT.parse("Feb-20-2015");
+		
+		Budget budget = Budget.fromPrimaryIncome(today, income);
+		assertNotNull(budget);
+		assertEquals(BudgetType.BiWeekly, budget.getBudgetType());
+		assertEquals(new Integer(14), budget.getNumberOfDaysWithinPayPeriod());
+		assertEquals(expectedStartDate, budget.getStartDate());
+		assertEquals(expectedEndDate, budget.getEndDate());
+	}
+	
 }

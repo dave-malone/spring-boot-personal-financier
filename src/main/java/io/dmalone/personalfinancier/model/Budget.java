@@ -208,5 +208,22 @@ public class Budget {
 	public void setNumberOfDaysWithinPayPeriod(Integer numberOfDaysWithinPayPeriod) {
 		this.numberOfDaysWithinPayPeriod = numberOfDaysWithinPayPeriod;
 	}
+
+	public static Budget fromPrimaryIncome(Date forDate, Income income) {
+		final Budget budget = new Budget();
+		budget.addPlannedIncome(income);
+		
+		if(income.isPrimary() && income.isActive()){
+			if(IncomeFrequency.BiWeekly == income.getIncomeFrequency()){
+				budget.setBudgetType(BudgetType.BiWeekly);
+				budget.setNumberOfDaysWithinPayPeriod(income.getNumberOfDaysInOnePayPeriod());
+			}
+		}
+		
+		budget.setStartDate(income.getPayPeriodStartDate(forDate));
+		budget.setEndDate(income.getPayPeriodEndDate(forDate));
+		
+		return budget;
+	}
 	
 }

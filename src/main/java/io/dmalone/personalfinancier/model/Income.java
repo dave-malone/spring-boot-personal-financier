@@ -1,5 +1,7 @@
 package io.dmalone.personalfinancier.model;
 
+import io.dmalone.personalfinancier.util.DateUtil;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -204,6 +206,43 @@ public class Income {
 
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
+	}
+	
+
+	public int getNumberOfDaysInOnePayPeriod() {
+		int numberOfDaysInPayPeriod = 0;
+		
+		if(IncomeFrequency.BiWeekly == this.incomeFrequency){
+			numberOfDaysInPayPeriod = 14;
+		}else{
+			throw new RuntimeException("This program is not yet capable of handling non-Biweekly income frequencies");
+		}
+		return numberOfDaysInPayPeriod;
+	}
+	
+	public Date getPayPeriodStartDate(Date forDate){
+		return getPayPeriodStartAndEndDates(forDate)[0];
+	}
+	
+	public Date getPayPeriodEndDate(Date forDate){
+		return getPayPeriodStartAndEndDates(forDate)[1];
+	}
+
+	Date[] getPayPeriodStartAndEndDates(Date forDate) {
+		final Calendar calendar = DateUtil.getZeroedOutCalendar(this.startDate);
+		
+		Date startDate = calendar.getTime();
+		calendar.add(Calendar.DATE, getNumberOfDaysInOnePayPeriod());
+		Date endDate = calendar.getTime();
+		
+		while((forDate.compareTo(startDate) >= 0 && forDate.compareTo(endDate) <= 0) != true){
+			calendar.add(Calendar.DATE, 1);
+			startDate = calendar.getTime();
+			calendar.add(Calendar.DATE, (getNumberOfDaysInOnePayPeriod() - 1));
+			endDate = calendar.getTime();
+		}
+		
+		return new Date[]{startDate, endDate};
 	}
 	
 }
