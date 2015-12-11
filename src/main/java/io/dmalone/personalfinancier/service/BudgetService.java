@@ -7,6 +7,8 @@ import io.dmalone.personalfinancier.repository.BudgetRepository;
 import io.dmalone.personalfinancier.repository.IncomeRepository;
 import io.dmalone.personalfinancier.util.DateUtil;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -27,16 +29,33 @@ public class BudgetService {
 		this.expenseService = expenseService;
 	}
 	
-	public Budget getCurrentBudget(){
-		final Date today = DateUtil.getZeroedOutCalendar().getTime();
-		Budget currentBudget = this.budgetRepository.getByDate(today);
+	public List<Budget> generateForecast(int numberOfMonths){
+		List<Budget> forecast = new ArrayList<Budget>();
 		
-		if(currentBudget == null){
-			Income primaryIncome = incomeRepository.getPrimaryIncome();
-			currentBudget = generateBudget(today, primaryIncome);
+		final Calendar calendar = DateUtil.getZeroedOutCalendar();
+		for(int i = 0; i < 2 * numberOfMonths; i++){
+			Budget budget = getBudgetForDate(calendar.getTime());
+			forecast.add(budget);
+			calendar.add(Calendar.DATE, 14);
 		}
 		
-		return currentBudget;
+		return forecast;
+	}
+	
+	public Budget getBudgetForDate(Date forDate){
+		Budget budget = this.budgetRepository.getByDate(forDate);
+		
+		if(budget == null){
+			Income primaryIncome = incomeRepository.getPrimaryIncome();
+			budget = generateBudget(forDate, primaryIncome);
+		}
+		
+		return budget;
+	}
+	
+	public Budget getCurrentBudget(){
+		final Date today = DateUtil.getZeroedOutCalendar().getTime();
+		return getBudgetForDate(today);
 	}
 	
 	

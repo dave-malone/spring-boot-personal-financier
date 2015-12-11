@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Personal Financier</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="robots" content="index, follow" />
+
+		<!-- icons -->
+		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+		<link rel="shortcut icon" href="favicon.ico" />
+
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<style>
+			h2{
+				margin:1.4em 0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<div class="container">
+				<h1 class="header-heading">Personal Financier</h1>
+			</div>
+		</div>
+		<div class="nav-bar">
+			<div class="container">
+				<ul class="nav">
+					<li><a th:href="@{/}">Budget</a></li>
+					<li><a th:href="@{/expense/}">Expenses</a></li>
+					<li><a th:href="@{/income/}">Income</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="content">
+			<div class="container">
+				<div class="main">
+					<h1>Welcome to your Personal Financier</h1>
+					<hr />
+
+					<p class="message" th:text="${message}" />
+					
+					<h3 th:text="${numberOfMonths + ' Month Forecast'}">Forecast</h3>
+					<table class="table table-striped">
+						<tr>
+							<th>Start</th>
+							<th>End</th>
+							<th>Total Income</th>
+							<th>Total Expenses</th>
+							<th>Remainder</th>
+						</tr>
+						<tr th:each="budget : ${forecast}">
+							<td><a th:href="@{'/' + ${#dates.format(budget.startDate, 'MMM-dd-yyyy')}}" th:text="${#dates.format(budget.startDate, 'MMM dd, yyyy')}">Start Date</a></td>
+							<td th:text="${budget.endDate != null ? #dates.format(budget.endDate, 'MMM dd, yyyy') : ''}">Start Date</td>
+							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalIncome, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+							<td style="text-align: left" th:text="'$' + ${#numbers.formatDecimal(budget.remainderAfterExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			<div class="container">
+				&copy; Copyright 2015
+			</div>
+		</div>
+	</body>
+</html>
