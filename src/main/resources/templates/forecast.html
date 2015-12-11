@@ -8,10 +8,10 @@
 		<meta name="robots" content="index, follow" />
 
 		<!-- icons -->
-		<link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png" />
-		<link rel="shortcut icon" href="./favicon.ico" />
+		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
+		<link rel="shortcut icon" href="favicon.ico" />
 
-		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{./css/styles.css}"/>
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
 		<style>
 			h2{
 				margin:1.4em 0;
@@ -35,9 +35,9 @@
 		<div class="nav-bar">
 			<div class="container">
 				<ul class="nav">
-					<li><a th:href="@{./}">Budget</a></li>
-					<li><a th:href="@{./expense/}">Expenses</a></li>
-					<li><a th:href="@{./income/}">Income</a></li>
+					<li><a th:href="@{/}">Budget</a></li>
+					<li><a th:href="@{/expense/}">Expenses</a></li>
+					<li><a th:href="@{/income/}">Income</a></li>
 				</ul>
 			</div>
 		</div>
@@ -59,7 +59,7 @@
 							<th>Remainder</th>
 						</tr>
 						<tr th:each="budget : ${forecast}">
-							<td><a th:href="@{'./' + ${#dates.format(budget.startDate, 'MMM-dd-yyyy')}}" th:text="${#dates.format(budget.startDate, 'MMM dd, yyyy')}">Start Date</a></td>
+							<td><a th:href="@{'/' + ${#dates.format(budget.startDate, 'MMM-dd-yyyy')}}" th:text="${#dates.format(budget.startDate, 'MMM dd, yyyy')}">Start Date</a></td>
 							<td th:text="${budget.endDate != null ? #dates.format(budget.endDate, 'MMM dd, yyyy') : ''}">Start Date</td>
 							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalIncome, 1, 'DEFAULT', 2, 'DEFAULT')}" />
 							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
