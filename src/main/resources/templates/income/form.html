@@ -10,7 +10,7 @@
 		<!-- icons -->
 		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}" />
 		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}" />
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{../css/styles.css}" />
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" />
 		<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
 		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
@@ -43,9 +43,9 @@
 		<div class="nav-bar">
 			<div class="container">
 				<ul class="nav">
-					<li><a th:href="@{/}">Budget</a></li>
-					<li><a th:href="@{/expense/}">Expenses</a></li>
-					<li><a th:href="@{/income/}">All Income</a></li>
+					<li><a th:href="@{../}">Budget</a></li>
+					<li><a th:href="@{../expense/}">Expenses</a></li>
+					<li><a th:href="@{../income/}">All Income</a></li>
 				</ul>
 			</div>
 		</div>
@@ -55,7 +55,7 @@
 					<h1 th:text="${(income.id != null ? 'Edit' : 'Create') + ' Income'}">Page Title</h1>
 					<hr />
 					
-					<form action="#" th:action="@{/income/}" th:object="${income}" th:method="${income.id == null ? 'post' : 'put'}">
+					<form action="#" th:action="@{../income/}" th:object="${income}" th:method="${income.id == null ? 'post' : 'put'}">
 						<input th:if="${income.id != null}" type="hidden" th:field="*{id}" />
 						<ul>
 							<li>     

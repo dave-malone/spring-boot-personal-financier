@@ -8,10 +8,10 @@
 		<meta name="robots" content="index, follow" />
 
 		<!-- icons -->
-		<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png" />
-		<link rel="shortcut icon" href="favicon.ico" />
+		<link rel="apple-touch-icon" href="./assets/img/apple-touch-icon.png" />
+		<link rel="shortcut icon" href="./favicon.ico" />
 
-		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{./css/styles.css}"/>
 		<style>
 			h2{
 				margin:1.4em 0;
@@ -31,9 +31,9 @@
 		<div class="nav-bar">
 			<div class="container">
 				<ul class="nav">
-					<li><a th:href="@{/forecast/6}">Six Month Forecast</a></li>
-					<li><a th:href="@{/expense/}">Expenses</a></li>
-					<li><a th:href="@{/income/}">Income</a></li>
+					<li><a th:href="@{./forecast/6}">Six Month Forecast</a></li>
+					<li><a th:href="@{./expense/}">Expenses</a></li>
+					<li><a th:href="@{./income/}">Income</a></li>
 				</ul>
 			</div>
 		</div>
@@ -72,7 +72,7 @@
 							<th>Date</th>
 						</tr>
 						<tr th:each="income : ${budget.plannedIncome}">
-							<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
+							<td style="padding-right:1.3em;"><a th:href="@{'./income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
 							<td th:text="${income.incomeFrequency}">Frequency</td>
 							<td th:text="'$' + ${#numbers.formatDecimal(income.amount, 1, 'DEFAULT', 2, 'DEFAULT')}">Amount</td>
 							<td th:text="${income.startDate != null ? #dates.format(income.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
@@ -94,7 +94,7 @@
 							<th>Due Date</th>
 						</tr>
 						<tr th:each="expense : ${budget.plannedExpenses}">
-							<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
+							<td style="padding-right:1.3em;"><a th:href="@{'./expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
 							<td th:text="${expense.expenseType}">Type</td>
 							<td th:text="'$' + ${#numbers.formatDecimal(expense.amount, 1, 'DEFAULT', 2, 'DEFAULT')}">Amount</td>
 							<td th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>

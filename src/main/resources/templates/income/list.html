@@ -10,7 +10,7 @@
 		<!-- icons -->
 		<link rel="apple-touch-icon" href="/img/apple-touch-icon.png" th:href="@{/img/apple-touch-icon.png}"/>
 		<link rel="shortcut icon" href="favicon.ico" />
-		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{/css/styles.css}"/>
+		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{../css/styles.css}"/>
 		<style>
 			h3{
 				margin-top:2.2em;
@@ -48,9 +48,9 @@
 		<div class="nav-bar">
 			<div class="container">
 				<ul class="nav">
-					<li><a th:href="@{/}">Budget</a></li>
-					<li><a th:href="@{/expense/}">Expenses</a></li>
-					<li><a th:href="@{/income/create/}">New Income</a></li>
+					<li><a th:href="@{../}">Budget</a></li>
+					<li><a th:href="@{../expense/}">Expenses</a></li>
+					<li><a th:href="@{./create/}">New Income</a></li>
 				</ul>
 			</div>
 		</div>
@@ -71,12 +71,12 @@
 								<th>&nbsp;</th>
 							</tr>
 							<tr th:each="income : ${entry.value}">
-								<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
+								<td style="padding-right:1.3em;"><a th:href="@{'./edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
 								<td th:text="'$' + ${#numbers.formatDecimal(income.amount, 1, 'DEFAULT', 2, 'DEFAULT')}">Amount</td>
 								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}" th:text="${income.startDate != null ? #dates.format(income.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
 								<td th:if="${#strings.equals('Bi-Weekly', entry.key)}" th:text="${income.endDate != null ? #dates.format(income.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
 								<td th:if="${#strings.equals('One Time', entry.key)}" th:text="${income.date != null ? #dates.format(income.date, 'MMM dd, yyyy') : ''}">Date</td>
-								<td><a th:href="@{'/income/' + ${income.id}}" class="delete">Delete</a></td>
+								<td><a th:href="@{'./' + ${income.id}}" class="delete">Delete</a></td>
 							</tr>
 						</table>
 					</div>
