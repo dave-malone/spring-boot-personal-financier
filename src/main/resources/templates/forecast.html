@@ -16,6 +16,14 @@
 			h2{
 				margin:1.4em 0;
 			}
+			
+			.red{
+				color: red;
+			}
+			
+			.green{
+				color: green;
+			}
 		</style>
 	</head>
 	<body>
@@ -55,7 +63,7 @@
 							<td th:text="${budget.endDate != null ? #dates.format(budget.endDate, 'MMM dd, yyyy') : ''}">Start Date</td>
 							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalIncome, 1, 'DEFAULT', 2, 'DEFAULT')}" />
 							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
-							<td style="text-align: left" th:text="'$' + ${#numbers.formatDecimal(budget.remainderAfterExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+							<td style="text-align:left;" th:class="${budget.remainderAfterExpenses > 0} ? 'green' : 'red'" th:text="'$' + ${#numbers.formatDecimal(budget.remainderAfterExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
 						</tr>
 					</table>
 				</div>
