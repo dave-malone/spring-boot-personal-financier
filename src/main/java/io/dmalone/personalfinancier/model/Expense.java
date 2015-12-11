@@ -1,5 +1,7 @@
 package io.dmalone.personalfinancier.model;
 
+import io.dmalone.personalfinancier.util.DateRange;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -192,5 +194,28 @@ public class Expense {
 
 	public void setAutopay(boolean autopay) {
 		this.autopay = autopay;
+	}
+	
+	public boolean isActiveDuringDateRange(DateRange dateRange){
+		if(ExpenseType.Monthly == getExpenseType() && dateRange.isDayOfMonthWithinRange(getDayOfMonthDue())  && hasStartedByOrDuring(dateRange) && hasNotEndedByOrDuring(dateRange)){
+			return true;
+		}else if(ExpenseType.OneTime == getExpenseType() && dateRange.isDateInRange(getDueDate())){
+			return true;
+		}else if(ExpenseType.PerPaycheck == getExpenseType() && hasStartedByOrDuring(dateRange) && hasNotEndedByOrDuring(dateRange)){
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean hasNotEndedByOrDuring(DateRange dateRange) {
+		if(this.getEndDate() == null){
+			return true;
+		}
+		return this.getEndDate().after(dateRange.getEnd()) || dateRange.isDateInRange(this.getEndDate());
+	}
+
+	private boolean hasStartedByOrDuring(DateRange dateRange) {
+		return this.getStartDate().before(dateRange.getStart()) || dateRange.isDateInRange(this.getStartDate());
 	}
 }

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertNotNull;
 import io.dmalone.personalfinancier.PersonalfinancierApplication;
 import io.dmalone.personalfinancier.model.Budget;
 import io.dmalone.personalfinancier.model.BudgetType;
+import io.dmalone.personalfinancier.util.DateRange;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -41,10 +42,11 @@ public class BudgetRepositoryIntegrationTests {
 		calendar.add(Calendar.DATE, 13);
 		Date endDate = calendar.getTime();
 		
+		DateRange dateRange = new DateRange(startDate, endDate);
+		
 		Budget budget = new Budget();
 		budget.setBudgetType(BudgetType.BiWeekly);
-		budget.setStartDate(startDate);
-		budget.setEndDate(endDate);
+		budget.setDateRange(dateRange);
 		
 		budget = budgetRepository.save(budget);
 		System.out.println("Budget ID: " + budget.getId());

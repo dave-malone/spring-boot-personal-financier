@@ -15,7 +15,10 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.launch.support.SimpleJobLauncher;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
@@ -27,10 +30,13 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 @Configuration
 @EnableBatchProcessing
+@PropertySource("classpath:application.properties")
 public class BatchConfiguration {
 
 	@Bean
@@ -145,6 +151,14 @@ public class BatchConfiguration {
                 .next(importIncomeStep)
                 .end()
                 .build();
+    }
+    
+    @Bean
+    public JobLauncher jobLauncher(JobRepository jobRepository){
+    	SimpleJobLauncher jobLauncher = new SimpleJobLauncher();
+    	jobLauncher.setTaskExecutor(new SimpleAsyncTaskExecutor());
+    	jobLauncher.setJobRepository(jobRepository);
+    	return jobLauncher;
     }
 
 }

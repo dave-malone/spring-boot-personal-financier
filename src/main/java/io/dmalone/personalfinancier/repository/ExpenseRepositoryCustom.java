@@ -10,6 +10,8 @@ import java.util.Map;
 public interface ExpenseRepositoryCustom {
 
 	Map<ExpenseType, List<Expense>> getAllExpensesByType();
+	Map<ExpenseType, List<Expense>> getAllActiveExpensesByType();
+	Map<ExpenseType, List<Expense>> getAllInactiveExpensesByType();
 
 	List<Expense> getActiveExpenses();
 

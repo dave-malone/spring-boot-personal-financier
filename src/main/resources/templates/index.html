@@ -12,6 +12,11 @@
 		<link rel="shortcut icon" href="favicon.ico" />
 
 		<link rel="stylesheet" media="screen" href="../static/css/styles.css" th:href="@{css/styles.css}"/>
+		<style>
+			h2{
+				margin:1.4em 0;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="header">
@@ -33,11 +38,25 @@
 					<h1>Welcome to your Personal Financier</h1>
 					<hr />
 
-					<p th:text="${message}" />
-
-					<p th:text="${currentBudget.budgetType} + ' Budget for ' + ${currentBudget.startDate != null ? #dates.format(currentBudget.startDate, 'MMM dd') : ''} + ' - ' + ${currentBudget.endDate != null ? #dates.format(currentBudget.endDate, 'MMM dd') : ''}" />
+					<h2 th:text="${budget.budgetType} + ' Budget for ' + ${budget.startDate != null ? #dates.format(budget.startDate, 'MMMM dd') : ''} + ' - ' + ${budget.endDate != null ? #dates.format(budget.endDate, 'MMMM dd') : ''}">Budget for Selected Period</h2>
 					
-					<h2>Planned Income</h2>
+					<p class="message" th:text="${message}" />
+					
+					<h3>Summary</h3>
+					<table class="table table-striped">
+						<tr>
+							<th>Total Income</th>
+							<th>Total Expenses</th>
+							<th>Remainder</th>
+						</tr>
+						<tr>
+							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalIncome, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+							<td th:text="'$' + ${#numbers.formatDecimal(budget.totalExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+							<td style="text-align: left" th:text="'$' + ${#numbers.formatDecimal(budget.remainderAfterExpenses, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+						</tr>
+					</table>
+					
+					<h3>Planned Income</h3>
 					<table class="table table-striped">
 						<tr>
 							<th>&nbsp;</th>
@@ -47,10 +66,10 @@
 							<th>End Date</th>
 							<th>Date</th>
 						</tr>
-						<tr th:each="income : ${currentBudget.plannedIncome}">
+						<tr th:each="income : ${budget.plannedIncome}">
 							<td style="padding-right:1.3em;"><a th:href="@{'/income/edit/' + ${income.id}}" th:text="${income.name}">Name</a></td>
 							<td th:text="${income.incomeFrequency}">Frequency</td>
-							<td th:text="${income.amount}">Amount</td>
+							<td th:text="'$' + ${#numbers.formatDecimal(income.amount, 1, 'DEFAULT', 2, 'DEFAULT')}">Amount</td>
 							<td th:text="${income.startDate != null ? #dates.format(income.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
 							<td th:text="${income.endDate != null ? #dates.format(income.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
 							<td th:text="${income.date != null ? #dates.format(income.date, 'MMM dd, yyyy') : ''}">Date</td>
@@ -58,7 +77,7 @@
 					</table>
 					
 					
-					<h2>Planned Expenses</h2>
+					<h3>Planned Expenses</h3>
 					<table class="table table-striped">
 						<tr>
 							<th>&nbsp;</th>
@@ -69,28 +88,14 @@
 							<th>Day of Month Due</th>
 							<th>Due Date</th>
 						</tr>
-						<tr th:each="expense : ${currentBudget.plannedExpenses}">
+						<tr th:each="expense : ${budget.plannedExpenses}">
 							<td style="padding-right:1.3em;"><a th:href="@{'/expense/edit/' + ${expense.id}}" th:text="${expense.name}">Name</a></td>
 							<td th:text="${expense.expenseType}">Type</td>
-							<td th:text="${expense.amount}">Amount</td>
+							<td th:text="'$' + ${#numbers.formatDecimal(expense.amount, 1, 'DEFAULT', 2, 'DEFAULT')}">Amount</td>
 							<td th:text="${expense.startDate != null ? #dates.format(expense.startDate, 'MMM dd, yyyy') : ''}">Start Date</td>
 							<td th:text="${expense.endDate != null ? #dates.format(expense.endDate, 'MMM dd, yyyy') : ''}">End Date</td>
 							<td th:text="${expense.dayOfMonthDue}">Day of Month Due</td>
 							<td th:text="${expense.dueDate != null ? #dates.format(expense.dueDate, 'MMM dd, yyyy') : ''}">Due Date</td>
-						</tr>
-					</table>
-					
-					<h2>Summary</h2>
-					<table class="table table-striped">
-						<tr>
-							<th>Total Income</th>
-							<th>Total Expenses</th>
-							<th>Remainder</th>
-						</tr>
-						<tr>
-							<td th:text="${currentBudget.totalIncome}" />
-							<td th:text="${currentBudget.totalExpenses}" />
-							<td th:text="${currentBudget.remainderAfterExpenses}" />
 						</tr>
 					</table>
 				</div>

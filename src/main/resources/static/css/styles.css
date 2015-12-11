@@ -178,7 +178,7 @@ input[type=submit]:active {
 
 .container
 {
-	max-width: 50em;
+	max-width: 90%;
 	margin: 0 auto;
 }
 

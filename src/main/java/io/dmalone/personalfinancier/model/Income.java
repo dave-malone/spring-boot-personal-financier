@@ -1,5 +1,6 @@
 package io.dmalone.personalfinancier.model;
 
+import io.dmalone.personalfinancier.util.DateRange;
 import io.dmalone.personalfinancier.util.DateUtil;
 
 import java.math.BigDecimal;
@@ -207,42 +208,31 @@ public class Income {
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
 	}
-	
 
 	public int getNumberOfDaysInOnePayPeriod() {
-		int numberOfDaysInPayPeriod = 0;
-		
 		if(IncomeFrequency.BiWeekly == this.incomeFrequency){
-			numberOfDaysInPayPeriod = 14;
-		}else{
-			throw new RuntimeException("This program is not yet capable of handling non-Biweekly income frequencies");
+			return 14;
 		}
-		return numberOfDaysInPayPeriod;
-	}
-	
-	public Date getPayPeriodStartDate(Date forDate){
-		return getPayPeriodStartAndEndDates(forDate)[0];
-	}
-	
-	public Date getPayPeriodEndDate(Date forDate){
-		return getPayPeriodStartAndEndDates(forDate)[1];
+			
+		throw new RuntimeException("This program is not yet capable of handling non-Biweekly income frequencies");
 	}
 
-	Date[] getPayPeriodStartAndEndDates(Date forDate) {
+	DateRange getPayPeriodDateRange(Date forDate) {
+		//TODO - this logic should key off of the IncomeFrequency fields
 		final Calendar calendar = DateUtil.getZeroedOutCalendar(this.startDate);
+		final DateRange dateRange = new DateRange();
+		dateRange.setStart(calendar.getTime());
+		calendar.add(Calendar.DATE, (getNumberOfDaysInOnePayPeriod() - 1));
+		dateRange.setEnd(calendar.getTime());
 		
-		Date startDate = calendar.getTime();
-		calendar.add(Calendar.DATE, getNumberOfDaysInOnePayPeriod());
-		Date endDate = calendar.getTime();
-		
-		while((forDate.compareTo(startDate) >= 0 && forDate.compareTo(endDate) <= 0) != true){
+		while(dateRange.isDateInRange(forDate) != true){
 			calendar.add(Calendar.DATE, 1);
-			startDate = calendar.getTime();
+			dateRange.setStart(calendar.getTime());
 			calendar.add(Calendar.DATE, (getNumberOfDaysInOnePayPeriod() - 1));
-			endDate = calendar.getTime();
+			dateRange.setEnd(calendar.getTime());
 		}
 		
-		return new Date[]{startDate, endDate};
+		return dateRange;
 	}
 	
 }

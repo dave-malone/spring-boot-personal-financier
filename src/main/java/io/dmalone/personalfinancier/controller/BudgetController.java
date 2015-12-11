@@ -3,8 +3,6 @@ package io.dmalone.personalfinancier.controller;
 import io.dmalone.personalfinancier.model.Budget;
 import io.dmalone.personalfinancier.model.BudgetType;
 import io.dmalone.personalfinancier.service.BudgetService;
-import io.dmalone.personalfinancier.service.ExpenseService;
-import io.dmalone.personalfinancier.service.IncomeService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BudgetController {
 
 	private final BudgetService budgetService;
-	private final ExpenseService expenseService;
-	private final IncomeService incomeService;
+
 
 	@Autowired
-	public BudgetController(BudgetService budgetService, ExpenseService expenseService, IncomeService incomeService) {
+	public BudgetController(BudgetService budgetService) {
 		this.budgetService = budgetService;
-		this.incomeService = incomeService;
-		this.expenseService = expenseService;
 	}
 	
 	@InitBinder
@@ -43,10 +38,10 @@ public class BudgetController {
 	public String index(Model model){
 		Budget currentBudget = budgetService.getCurrentBudget();
 		if(currentBudget.getId() == null){
-			model.addAttribute("message", "This budget was auto generated using your planned expenses and income");
+			model.addAttribute("message", "This budget was auto-generated using your planned expenses and income");
 		}
 		
-		model.addAttribute("currentBudget", currentBudget);
+		model.addAttribute("budget", currentBudget);
 		
 		return "index";
 	}

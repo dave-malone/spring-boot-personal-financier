@@ -39,7 +39,7 @@ public class ExpenseItemProcessor implements ItemProcessor<ExpenseData, Expense>
 		}
 		
 		expense.setName(item.getName());
-		expense.setStartDate(item.getStart());
+		expense.setStartDate(item.getStart() != null ? item.getStart() : new Date());
 		
 		log.debug("converted expense: " + expense);
 		

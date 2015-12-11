@@ -19,5 +19,17 @@ public class DateUtil {
 		calendar.set(Calendar.MILLISECOND, 0);
 		return calendar;
 	}
+
+	public static Date maxOutTimeFields(Date date) {
+		final Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR, calendar.getActualMaximum(Calendar.HOUR));
+		calendar.set(Calendar.MINUTE, calendar.getActualMaximum(Calendar.MINUTE));
+		calendar.set(Calendar.SECOND, calendar.getActualMaximum(Calendar.SECOND));
+		calendar.set(Calendar.MILLISECOND, calendar.getActualMaximum(Calendar.MILLISECOND));
+		return calendar.getTime();
+	}
+	
+	
 	
 }

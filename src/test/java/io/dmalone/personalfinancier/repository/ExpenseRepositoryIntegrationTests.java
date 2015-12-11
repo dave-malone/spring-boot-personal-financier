@@ -7,6 +7,8 @@ import io.dmalone.personalfinancier.model.ExpenseType;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Before;
@@ -46,7 +48,6 @@ public class ExpenseRepositoryIntegrationTests {
 		expense.setEndDate(endDate);
 		
 		expense = expenseRepository.save(expense);
-		System.out.println("Expense ID: " + expense.getId());
 		assertNotNull(expense.getId());
 	}
 	
@@ -56,8 +57,17 @@ public class ExpenseRepositoryIntegrationTests {
 	}
 
 	@Test
-	public void testSomething() {
-		fail("not yet implemented");
+	public void testGetAllExpensesByType(){
+		Map<ExpenseType, List<Expense>> allExpensesByType = expenseRepository.getAllExpensesByType();
+		assertNotNull(allExpensesByType);
+		//since there are currently three expense types, there will always be three 
+		assertEquals(3, allExpensesByType.size());
+
+		
+		assertEquals(0, allExpensesByType.get(ExpenseType.OneTime).size());
+		assertEquals(0, allExpensesByType.get(ExpenseType.PerPaycheck).size());
+		assertEquals(1, allExpensesByType.get(ExpenseType.Monthly).size());
 	}
+	
 
 }

@@ -1,6 +1,10 @@
 package io.dmalone.personalfinancier.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import io.dmalone.personalfinancier.util.DateRange;
 
 import java.util.Date;
 import java.util.List;
@@ -67,9 +71,9 @@ public class IncomeTest {
 	@Test
 	public void testGetPayPeriodStartAndEndDates() throws Exception{
 		Date incomeStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
-		Date today = Income.DATE_FORMAT.parse("Feb-08-2015");
-		Date expectedStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
-		Date expectedEndDate = Income.DATE_FORMAT.parse("Feb-20-2015");
+		Date today = Income.DATE_FORMAT.parse("Dec-10-2015");
+		Date expectedStartDate = Income.DATE_FORMAT.parse("Nov-27-2015");
+		Date expectedEndDate = Income.DATE_FORMAT.parse("Dec-10-2015");
 		
 		Income income = new Income();
 		income.setIncomeFrequency(IncomeFrequency.BiWeekly);
@@ -77,11 +81,10 @@ public class IncomeTest {
 		income.setActive(true);
 		income.setPrimary(true);
 		
-		Date[] startAndEndDates = income.getPayPeriodStartAndEndDates(today);
+		DateRange startAndEndDates = income.getPayPeriodDateRange(today);
 		assertNotNull(startAndEndDates);
-		assertEquals(2, startAndEndDates.length);
-		assertEquals(expectedStartDate, startAndEndDates[0]);
-		assertEquals(expectedEndDate, startAndEndDates[1]);
+		assertEquals(expectedStartDate, startAndEndDates.getStart());
+		assertEquals(expectedEndDate, startAndEndDates.getEnd());
 	}
 
 }

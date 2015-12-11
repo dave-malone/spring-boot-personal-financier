@@ -60,8 +60,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom{
 		//Integer dayOfMonthDue & Date startDate & Date endDate
 		List<Expense> monthlyExpenses = mongoTemplate.find(query(
 				where("expenseType").is(ExpenseType.Monthly)
-				.and("active").is(true).and("dayOfMonthDue")
-				.in(budget.getDaysOfMonthWithinPeriod())), 
+				.and("active").is(true)), 
 			Expense.class);
 		return monthlyExpenses;
 	}
@@ -75,6 +74,36 @@ public class ExpenseRepositoryImpl implements ExpenseRepositoryCustom{
 				.and("active").is(true)), 
 			Expense.class);
 		return perPaycheckExpenses;
+	}
+
+
+	@Override
+	public Map<ExpenseType, List<Expense>> getAllActiveExpensesByType() {
+		final Map<ExpenseType, List<Expense>> expensesByType = new TreeMap<ExpenseType, List<Expense>>();
+		
+		for(ExpenseType expenseType : ExpenseType.values()){
+			List<Expense> expenses = mongoTemplate.find(
+					query(where("expenseType").is(expenseType).and("active").is(true)), 
+					Expense.class);
+			expensesByType.put(expenseType, expenses);
+		}
+		
+		return expensesByType;
+	}
+
+
+	@Override
+	public Map<ExpenseType, List<Expense>> getAllInactiveExpensesByType() {
+		final Map<ExpenseType, List<Expense>> expensesByType = new TreeMap<ExpenseType, List<Expense>>();
+		
+		for(ExpenseType expenseType : ExpenseType.values()){
+			List<Expense> expenses = mongoTemplate.find(
+					query(where("expenseType").is(expenseType).and("active").is(false)), 
+					Expense.class);
+			expensesByType.put(expenseType, expenses);
+		}
+		
+		return expensesByType;
 	}
 	
 	

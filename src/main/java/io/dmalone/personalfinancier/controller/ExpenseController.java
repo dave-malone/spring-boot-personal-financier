@@ -44,7 +44,16 @@ public class ExpenseController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String index(Model model){
-		Map<ExpenseType, List<Expense>> expensesByType = expenseService.getAllExpensesByType();
+		Map<ExpenseType, List<Expense>> expensesByType = expenseService.getAllActiveExpensesByType();
+		
+		model.addAttribute("expensesByType", expensesByType);
+		return "expense/list";
+	}
+
+	
+	@RequestMapping(value = "/inactive", method = RequestMethod.GET)
+	public String inactiveExpenses(Model model){
+		Map<ExpenseType, List<Expense>> expensesByType = expenseService.getAllInactiveExpensesByType();
 		
 		model.addAttribute("expensesByType", expensesByType);
 		return "expense/list";

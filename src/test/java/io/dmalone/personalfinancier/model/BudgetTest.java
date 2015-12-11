@@ -2,6 +2,7 @@ package io.dmalone.personalfinancier.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import io.dmalone.personalfinancier.util.DateRange;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -23,13 +24,12 @@ public class BudgetTest {
 	@Before
 	public void setUp() throws Exception {
 		budget = new Budget();
-		budget.setNumberOfDaysWithinPayPeriod(14);
 		
 		Date startDate = dateFormat.parse("02/06/2015");
 		Date endDate = dateFormat.parse("02/19/2015");
 		
-		budget.setStartDate(startDate);
-		budget.setEndDate(endDate);
+		DateRange dateRange = new DateRange(startDate, endDate);
+		budget.setDateRange(dateRange);
 	}
 
 	@Test
@@ -148,12 +148,12 @@ public class BudgetTest {
 		
 		Date today = Income.DATE_FORMAT.parse("Feb-08-2015");
 		Date expectedStartDate = Income.DATE_FORMAT.parse("Feb-06-2015");
-		Date expectedEndDate = Income.DATE_FORMAT.parse("Feb-20-2015");
+		Date expectedEndDate = Income.DATE_FORMAT.parse("Feb-19-2015");
 		
 		Budget budget = Budget.fromPrimaryIncome(today, income);
 		assertNotNull(budget);
 		assertEquals(BudgetType.BiWeekly, budget.getBudgetType());
-		assertEquals(new Integer(14), budget.getNumberOfDaysWithinPayPeriod());
+		assertEquals(14, budget.getNumberOfDaysWithinPayPeriod());
 		assertEquals(expectedStartDate, budget.getStartDate());
 		assertEquals(expectedEndDate, budget.getEndDate());
 	}

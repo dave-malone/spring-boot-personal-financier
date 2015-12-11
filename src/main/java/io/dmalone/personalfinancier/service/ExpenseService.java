@@ -25,8 +25,12 @@ public class ExpenseService {
 		this.expenseRepository = expenseRepository;
 	}
 
-	public Map<ExpenseType, List<Expense>> getAllExpensesByType() {
-		return expenseRepository.getAllExpensesByType();
+	public Map<ExpenseType, List<Expense>> getAllActiveExpensesByType() {
+		return expenseRepository.getAllActiveExpensesByType();
+	}
+	
+	public Map<ExpenseType, List<Expense>> getAllInactiveExpensesByType() {
+		return expenseRepository.getAllInactiveExpensesByType();
 	}
 
 	public List<Expense> findByExpenseType(ExpenseType expenseType) {
