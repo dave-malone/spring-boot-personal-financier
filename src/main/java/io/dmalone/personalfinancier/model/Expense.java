@@ -197,6 +197,10 @@ public class Expense {
 	}
 	
 	public boolean isActiveDuringDateRange(DateRange dateRange){
+		if(this.active != true){
+			return false;
+		}
+		
 		if(ExpenseType.Monthly == getExpenseType() && dateRange.isDayOfMonthWithinRange(getDayOfMonthDue())  && hasStartedByOrDuring(dateRange) && hasNotEndedByOrDuring(dateRange)){
 			return true;
 		}else if(ExpenseType.OneTime == getExpenseType() && dateRange.isDateInRange(getDueDate())){

@@ -91,10 +91,10 @@
 							</li>
 							<li id="dayOfMonthDueOption">
 								<label for="dayOfMonthDue">Day of Month Due:</label>
-								<select>
+								<select id="dayOfMonthDue" th:field="${expense.dayOfMonthDue}">
 									<option th:each="i : ${#numbers.sequence( 1, 31 )}"
-										th:value="${expense.dayOfMonthDue}" 
-										th:text="${i}">Day of Month Due</option>
+										th:text="${i}" 
+										th:value="${i}">Day of Month Due</option>
 								</select>
 							</li>
 							<li id="dueDateOption">

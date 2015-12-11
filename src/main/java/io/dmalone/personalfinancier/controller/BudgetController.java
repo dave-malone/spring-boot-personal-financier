@@ -41,7 +41,7 @@ public class BudgetController {
 	public String index(Model model){
 		Budget currentBudget = budgetService.getCurrentBudget();
 		if(currentBudget.getId() == null){
-			model.addAttribute("message", "This budget was auto-generated using your planned expenses and income");
+			model.addAttribute("message", "This budget was auto-generated using your planned expenses and primary income");
 		}
 		
 		model.addAttribute("budget", currentBudget);

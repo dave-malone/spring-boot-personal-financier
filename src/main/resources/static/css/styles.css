@@ -104,7 +104,7 @@ form label {
     padding:3px;
 }
 
-form input{
+form input[type=text]{
     height:20px; 
     width:220px; 
     padding:5px 8px;
@@ -124,12 +124,12 @@ form select{
 form textarea {padding:8px; width:300px;}
 form button {margin-left:156px;}
 
-form input, form textarea, form select { 
+form input[type=text], form textarea, form select { 
     border:1px solid #aaa;
     box-shadow: 0px 0px 3px #ccc, 0 10px 15px #eee inset;
     border-radius:2px;
 }
-form input:focus, form textarea:focus, form select:focus {
+form input[type=text]:focus, form textarea:focus, form select:focus {
     background: #fff; 
     border:1px solid #555; 
     box-shadow: 0 0 3px #aaa; 
